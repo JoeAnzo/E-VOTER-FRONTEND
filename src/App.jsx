@@ -1,6 +1,6 @@
 import GetStarted from "../Components/GetStarted"
 import { Router,Routes,Route, Navigate } from "react-router-dom"
-import Login from "../Components/login"
+import Login from "../Components/Login"
 import HeadPrefect from "../Components/HeadPrefect"
 import { createContext, useState } from "react"
 export const userContext = createContext()
