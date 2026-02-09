@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Header from './Header';
-import Login from './login';
+import Login from './Login';
 import { Link } from 'react-router-dom';
 import { Vote } from 'lucide-react';
 import { userContext } from '../src/App';
