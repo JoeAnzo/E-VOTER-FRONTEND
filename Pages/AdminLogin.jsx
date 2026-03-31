@@ -2,8 +2,12 @@ import {User}  from 'lucide-react'
 import { getAdminUser } from '../Services/ApiCalls.js'
 import {EyeIcon,EyeClosed} from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { userContext } from '../Contexts/userContext.js'
+import { useContext } from 'react'
 function AdminLogin(){
 
+    const {setIsAuth} = useContext(userContext)
     const [adminUserDetails,setAdminUserDetails] = useState({Username:'',password:''})
     const [error,setError] = useState({error:false,errorMessage:''})
     const [showPassword,setShowPassword] = useState(false)
@@ -11,17 +15,10 @@ function AdminLogin(){
         focusAdminUserNameInput:false,
         focusAdminPasswordInput:false
     })
+    const navigate = useNavigate()
 
     function checkForFormErrors(){
-        if (adminUserDetails.Username === '' || adminUserDetails.password === ''){
-            setError((prev) => {
-                return {
-                    ...prev,
-                    error:true,
-                    errorMessage:'Please fill all the details'
-                }
-            })
-        }
+        
     }
 
     function handleUserName(e){
@@ -61,9 +58,43 @@ function AdminLogin(){
     }
 
     async function handleLoginClick(){
-        checkForFormErrors()
-        const adminUser = await getAdminUser(adminUserDetails.Username,adminUserDetails.password)
-        console.log(adminUser)
+      if (adminUserDetails.Username === '' || adminUserDetails.password === ''){
+            setError((prev) => {
+                return {
+                    ...prev,
+                    error:true,
+                    errorMessage:'Please fill all the details'
+                }
+            })
+        }
+        else {
+            const adminUser = await getAdminUser(adminUserDetails.Username,adminUserDetails.password)
+            console.log(adminUser)
+             if (adminUser) {
+                 if (adminUser?.adminUser){
+                    setIsAuth(true)
+                    navigate("/admin/dashboard")
+                }
+             if (!adminUser.adminUser) {
+                setError((prev)=>{
+                    return {
+                        ...prev,
+                        error:true,
+                        errorMessage:adminUser.message
+                    }
+                })
+            }
+        } else {
+            setError((prev)=>{
+                return {
+                    ...prev,
+                    error:true,
+                    errorMessage:'Something went wrong !'
+                }
+            })
+        }
+        }
+        
     }
 
     function togglePasswordIcon(){
@@ -81,11 +112,11 @@ function AdminLogin(){
                     <h2 className='text-white'>User Name</h2>
                     <input type='text' placeholder='User name' value={adminUserDetails.Username} onChange={handleUserName} className={`${focusInput.focusAdminUserNameInput ? 'border-2 border-[#5478FF]':''} bg-gray-100 py-2.5 pl-2 rounded-xl w-full`}/>
                     <h2 className='text-white'>Password</h2>
-                    <div className='flex gap-4 justify-center items-center'>
+                    <div className='flex relative justify-center items-center'>
                         <input type={`${showPassword ? 'text':'password'}`} placeholder='password' value={adminUserDetails.password} onChange={handlePassword} className={`${focusInput.focusAdminPasswordInput ? 'border-2 border-[#5478FF]':''} bg-gray-100 py-2.5 pl-2 rounded-xl w-full`} />
-                        <div onClick={togglePasswordIcon}>
+                        <div className='absolute right-2' onClick={togglePasswordIcon}>
                             {
-                                showPassword ? <EyeIcon  color='white' size={30}/>:<EyeClosed size={30} color='white'/>
+                                showPassword ? <EyeIcon  color='#5478FF' size={30}/>:<EyeClosed size={30} color='#5478FF'/>
                             }
                         </div>
                     </div>

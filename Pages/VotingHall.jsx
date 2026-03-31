@@ -81,7 +81,7 @@ setProgressBar(percentage)
         <UserProfile username={JSON.parse(localStorage.getItem("username"))}/>
         <div className="text-xl text-center space-y-5">
             <ProgressBar posts={posts} nextPost={nextPost} setProgressBar={setProgressBar}/>
-            <h1 className="text-center text-white text-3xl align-left">Vote your next {posts[nextPost]}</h1>
+            <h1 className="text-center text-white text-3xl align-left">Vote your next {posts[nextPost]} prefect</h1>
             <div className="bg-red-600 relative mx-auto">
                 {
                     nortification.displayError ? <div className="absolute bg-[#5478FF] mx-auto w-[98%] left-0 right-0 border-l-red-700 border-l-4 text-red-700 font-extrabold"><h2>Please vote for one of the people below </h2></div> :

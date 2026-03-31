@@ -9,7 +9,7 @@ import { userContext } from '../Contexts/userContext.js';
 import {searchStudent,fetchStudent} from '../Services/ApiCalls.js';
 import useDebounce from '../Hooks/useDebounce.jsx';
 function Login() {
-const {name,setName,grade,setGrade,stream,setStream,OTP,setOTP} = useContext(userContext)
+const {name,setName,grade,setGrade,stream,setStream,OTP,setOTP,setIsAuth} = useContext(userContext)
 const [searchResults,setSearchResults] = useState([])
 const [showClass,setShowClass] = useState(false)
 const [showStream,setShowStream] = useState(false)
@@ -70,6 +70,8 @@ async function checkForStudent(){
   if (Student.querySearchResult.length > 0){
     // console.log(Student.querySearchResult[0].otp,parseInt(OTP));
     if (Student.querySearchResult[0].otp === parseInt(OTP)){
+      setIsAuth(true)
+      
       navigate('/student/voting-hall')
     } else {
       setError(true)
