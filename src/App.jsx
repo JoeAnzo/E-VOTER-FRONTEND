@@ -15,11 +15,11 @@ function App() {
   const [grade,setGrade] = useState('')
   const [OTP,setOTP] = useState(null)
   const [isAuth,setIsAuth] = useState(false)
-  const [votedForCandidates,setVotedForCandidate] = useState([])
+  const [votedForCandidates,setVotedForCandidates] = useState([])
 
   return (
     <> 
-        <userContext.Provider value={{name,setName,stream,setStream,grade,setGrade,OTP,setOTP,votedForCandidates,setVotedForCandidate,isAuth,setIsAuth}}>
+        <userContext.Provider value={{name,setName,stream,setStream,grade,setGrade,OTP,setOTP,votedForCandidates,setVotedForCandidates,isAuth,setIsAuth}}>
             <Routes>
               <Route path="/" element={<GetStarted/>}/>
               <Route path="/auth/student/login" element={<Login/>}/>
