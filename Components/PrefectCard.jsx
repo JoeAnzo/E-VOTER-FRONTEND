@@ -28,8 +28,8 @@ function PrefectCard({posts,candidate,isClicked,setIsClicked,id,setNortification
     }
     return(
         <>
-        <div onClick={() => handleClick(candidate.Candidate_Name,candidate.prefectorial_Post)} key={candidate.id} className={`flex mt-20 w-[98%] sm:w-[500px] px-5 text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#101540] rounded-md ${isClicked ? 'border-2 border-[#5478FF]':''}`}>
-            <img className='h-[200px] max-w-full object-cover' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
+        <div onClick={() => handleClick(candidate.Candidate_Name,candidate.prefectorial_Post)} key={candidate.id} className={`flex mt-20 w-[98%] sm:w-[500px] pr-2  text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#101540] rounded-md ${isClicked ? 'border-2 border-[#5478FF]':''}`}>
+            <img className='h-[200px] w-[200px] rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
             <div>
                 <p>{candidate.Candidate_Name}</p>
                 <p>{candidate.Class} {candidate.Stream}</p>

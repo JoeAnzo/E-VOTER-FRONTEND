@@ -5,7 +5,7 @@ import { fetchPrefectPosts,fetchCandidatesPerPost } from "../Services/ApiCalls";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../Components/ProgressBar";
 import PrefectCard from "../Components/PrefectCard";
-
+import {OrbitProgress} from 'react-loading-indicators'
 
 function VotingHall(){
     const[posts,setPosts] = useState([])
@@ -92,15 +92,16 @@ setProgressBar(percentage)
             </div>
             <div className="flex flex-col justify-center items-center gap-5 sm:flex-row">
                 {
-            candidates.map((candidate,index)=>{
-                return(
-                    <>
-                    {
-                        loading ? <h2>Loading...</h2> : <PrefectCard key={index} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} nextPost={nextPost} setNortification={setNortification} handleNextPost={handleNextPost} posts={posts} handlePreviousPost={handlePreviousPost}/>
-                    }
-                    </>
-                )
-            })
+                    
+                        loading ? 
+                        <div className="h-[200px] mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
+                         color="#5478FF" size="medium" text="" textColor="" />
+                         </div> : 
+                         candidates.map((candidate,index)=>{
+                            return(
+                                <PrefectCard key={index} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} nextPost={nextPost} setNortification={setNortification} handleNextPost={handleNextPost} posts={posts} handlePreviousPost={handlePreviousPost}/>
+                            )
+                        })
                 }
             </div>
             <div className="flex items-end mx-auto mb-4 px-4 justify-between w-[98%]">
