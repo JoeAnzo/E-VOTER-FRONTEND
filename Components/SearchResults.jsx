@@ -10,7 +10,11 @@ function SearchResults({results}){
       setName(name)
       setGrade(grade)
       setStream(stream)
-      localStorage.setItem("username",JSON.stringify(name))
+      localStorage.setItem("studentInfo",JSON.stringify({
+        name:name,
+        class:grade,
+        stream:stream
+      }))
       setDisplaySearch(false)
     }
     return(

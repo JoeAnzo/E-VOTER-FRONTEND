@@ -78,7 +78,7 @@ setProgressBar(percentage)
 
     return(
         <div>
-        <UserProfile username={JSON.parse(localStorage.getItem("username"))}/>
+        <UserProfile studentInfo={JSON.parse(localStorage.getItem("studentInfo"))}/>
         <div className="text-xl text-center space-y-5">
             <ProgressBar posts={posts} nextPost={nextPost} setProgressBar={setProgressBar}/>
             <h1 className="text-center text-white text-3xl align-left">Vote your next {posts[nextPost]} prefect</h1>
@@ -105,14 +105,14 @@ setProgressBar(percentage)
             </div>
             <div className="flex items-end mx-auto mb-4 px-4 justify-between w-[98%]">
                 {
-                    candidates.length > 0 ?
+                    loading ? null :
                     <>
                     <button className="bg-[#101540] cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handlePreviousPost}>
                         <ArrowLeft color='white'/> Back </button>
                     <button className="bg-[#101540]  cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handleNextPost}>
-                        {(nextPost === posts.length - 1) ? 'Submit Form':'Next'} <ArrowRight color='white'/>
+                        {(nextPost === posts.length - 1) ? 'Submit':'Next'} <ArrowRight color='white'/>
                     </button>
-                    </> : null
+                    </>
                 }
             </div>
 
