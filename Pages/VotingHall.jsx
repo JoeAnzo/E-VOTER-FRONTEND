@@ -1,6 +1,6 @@
 import { useEffect,useState} from "react";
 import UserProfile from "../Components/UserProfile";
-import { ArrowRight,ArrowLeft } from "lucide-react";
+import { ArrowRight,ArrowLeft,Check} from "lucide-react";
 import { fetchPrefectPosts,fetchCandidatesPerPost } from "../Services/ApiCalls";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../Components/ProgressBar";
@@ -84,15 +84,15 @@ setProgressBar(percentage)
             <h1 className="text-center text-white text-3xl align-left">Vote your next {posts[nextPost]} prefect</h1>
             <div className="bg-red-600 relative mx-auto">
                 {
-                    nortification.displayError ? <div className="absolute bg-[#5478FF] mx-auto w-[98%] left-0 right-0 border-l-red-700 border-l-4 text-red-700 font-extrabold"><h2>Please vote for one of the people below </h2></div> :
-                    <div className={`absolute left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md border-l-[#101540] border-l-10 text-white bg-[#5478FF] font-extrabold`}>
-                        <h2>{nortification.votedForMessage}</h2>
+                    nortification.displayError ? <div className="absolute  mx-auto w-[98%] left-0 right-0 text-red-600 font-extrabold"><h2>Vote for one of the candidates below </h2></div> :
+                    <div className={`absolute flex justify-center items-center gap-2 left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md font-extrabold`}>
+                        <Check color='#5478FF'/>
+                        <p className="text-[#5478FF]">{nortification.votedForMessage}</p>
                     </div>
                 }
             </div>
             <div className="flex flex-col justify-center items-center gap-5 sm:flex-row">
                 {
-                    
                         loading ? 
                         <div className="h-[200px] mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
                          color="#5478FF" size="medium" text="" textColor="" />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useRef,useState,useEffect} from 'react'
 
 export default function useInView(options) {
     const ref = useRef(null)

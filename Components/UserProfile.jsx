@@ -10,7 +10,7 @@ function UserProfile({studentInfo}) {
    className='flex justify-between items-center bg-[#101540] shadow-xl pl-2 py-4'>
          <div className='flex items-center justify-center gap-2'>
             <Logo/>
-            <h1 className='text-2xl text-white'>E-Voter</h1>
+            <h1 className='text-2xl text-white'>E voter</h1>
          </div>
          <div className='flex gap-1 items-center text-white'>
             <User size={30}/> 

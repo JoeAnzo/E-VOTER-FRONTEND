@@ -18,7 +18,7 @@ function handleClick(){
        <div className='flex flex-col justify-center items-center relative bg-[#192346]'>
            <div className='flex flex-col justify-center items-center pt-4'>
                 <Logo/>
-                <h1 className='my-4 text-3xl text-white'>E-voter</h1>
+                <h1 className='my-4 text-3xl text-white'>E voter</h1>
                 <img className='h-[300px] w-[300px]' src={votingIMG} alt="voting-image" />
                <div>
                   <p className='text-center text-white my-10'>

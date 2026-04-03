@@ -8,14 +8,15 @@ function PrefectCard({posts,candidate,isClicked,setIsClicked,id,setNortification
         threshold:0.5
     })
 
-    function handleClick(candidate){
+    function handleClick({Candidate_Name,prefectorial_Post}){
+
         setIsClicked(id)
         setNortification((prev)=>{
             return {
                 ...prev,
                 displayMessage:true,
                 displayError:false,
-                votedForMessage:`You have voted ${candidate.candidate_Name} as your ${candidate.prefectorial_Post}`
+                votedForMessage:`voted ${Candidate_Name} for ${prefectorial_Post}`
             }
         })
         setVotedForCandidates((prev) => {
@@ -36,7 +37,9 @@ function PrefectCard({posts,candidate,isClicked,setIsClicked,id,setNortification
             <div className="flex items-center gap-2">
                 {isClicked ? 'Voted':'vote'}
                 <input className="w-4 h-4 accent-[#5478FF]" type='checkbox' checked={isClicked}/>
-                <p>{isVisible}</p>
+                <p>{
+                    console.log(isVisible)
+                    }</p>
             </div>          
         </div>
         </>
