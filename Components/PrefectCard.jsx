@@ -2,7 +2,7 @@ import React, { useContext,useEffect, useState } from "react";
 import { userContext } from "../Contexts/userContext.js";
 import useInView from '../Hooks/useInView.jsx'
 
-function PrefectCard({posts,candidate,isClicked,setIsClicked,id,setNortification}){
+function PrefectCard({posts,candidate,isClicked,setIsClicked,id,setNortification,index}){
     const {votedForCandidates,setVotedForCandidates} = useContext(userContext)
     const [ref,isVisible] = useInView({
         threshold:0.5
@@ -28,8 +28,8 @@ function PrefectCard({posts,candidate,isClicked,setIsClicked,id,setNortification
     }
     return(
         <>
-        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} className={`flex mt-20 w-[98%] sm:w-[500px] pr-2  text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#101540] rounded-md ${isClicked ? 'border-2 border-[#5478FF]':''}`}>
-            <img className='h-[200px] w-[200px] rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
+        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} style={{ transitionDelay: `${index * 0.15}s` }} className={`flex transition-all transition-ease duration-300 ${isVisible ? 'sm:translate-y-0 translate-x-0 opacity-100' : '-translate-x-20 sm:translate-y-20 opacity-0'} mt-20 w-[98%] sm:w-[500px] pr-2  text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#101540] rounded-md ${isClicked ? 'border-2 border-[#5478FF]':''}`}>
+            <img className='h-[200px] w-[150px] sm:w-[200px] rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
             <div>
                 <p>{candidate.Candidate_Name}</p>
                 <p>{candidate.Class} {candidate.Stream}</p>

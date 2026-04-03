@@ -12,9 +12,6 @@ function SubmitVotes(){
             <h2 className='text-center'>
                 Your Votes have been Submited Successfully
             </h2>
-            <p className='text-center'>
-                Thank you for voting using E-VOTER your vote is counted and secured
-            </p>
             <button onClick={handleClick} className='rounded-full p-4 bg-[#5478FF] hover:cursor-pointer hover:opacity-80'>
                 <ArrowRight/>
             </button>

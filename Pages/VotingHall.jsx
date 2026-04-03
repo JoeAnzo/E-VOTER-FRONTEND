@@ -85,7 +85,7 @@ setProgressBar(percentage)
             <div className="bg-red-600 relative mx-auto">
                 {
                     nortification.displayError ? <div className="absolute  mx-auto w-[98%] left-0 right-0 text-red-600 font-extrabold"><h2>Vote for one of the candidates below </h2></div> :
-                    <div className={`absolute flex justify-center items-center gap-2 left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md font-extrabold`}>
+                    <div className={`absolute flex justify-center items-center left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md font-extrabold`}>
                         <Check color='#5478FF'/>
                         <p className="text-[#5478FF]">{nortification.votedForMessage}</p>
                     </div>
@@ -99,7 +99,7 @@ setProgressBar(percentage)
                          </div> : 
                          candidates.map((candidate,index)=>{
                             return(
-                                <PrefectCard key={index} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} nextPost={nextPost} setNortification={setNortification} handleNextPost={handleNextPost} posts={posts} handlePreviousPost={handlePreviousPost}/>
+                                <PrefectCard key={index} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} nextPost={nextPost} setNortification={setNortification} handleNextPost={handleNextPost} posts={posts} handlePreviousPost={handlePreviousPost} index={index}/>
                             )
                         })
                 }
