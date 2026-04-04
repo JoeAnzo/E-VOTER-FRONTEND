@@ -68,15 +68,22 @@ function errorhandler(){
 async function checkForStudent(){
   const Student = await fetchStudent(name,grade,stream)
   if (Student.querySearchResult.length > 0){
-    // console.log(Student.querySearchResult[0].otp,parseInt(OTP));
+    localStorage.setItem("studentInfo",JSON.stringify({
+        name:name,
+        class:grade,
+        stream:stream
+      }))
     if (Student.querySearchResult[0].otp === parseInt(OTP)){
       setIsAuth(true)
-      
+      setError(false)
       navigate('/student/voting-hall')
     } else {
       setError(true)
       setErrorMessage('Invalid OTP code try again')
     }
+  } else {
+    setError(true)
+    setErrorMessage('Student not found check your details and try again')
   }
 }
 async function handleSubmit(e){
@@ -84,8 +91,6 @@ async function handleSubmit(e){
   errorhandler()
   await checkForStudent() 
 }
-
-
 
 
   return (
@@ -135,7 +140,7 @@ async function handleSubmit(e){
               error ? errorMessage : ''
             }
           </p>
-           <button type='submit' className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer hover:opacity-80'>
+           <button onClick={checkForStudent} type='submit' className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer hover:opacity-80'>
              Enter Voting Hall
            </button>
            <div className='text-center text-white'>

@@ -10,6 +10,9 @@ export default function useInView(options) {
         },options)
         if (ref.current){
             observer.observe(ref.current)
+            if (isVisible){
+                observer.unobserve(ref.current)
+            }
         }
         return () => {
             observer.disconnect()
