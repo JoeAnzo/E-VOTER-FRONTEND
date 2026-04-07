@@ -30,7 +30,7 @@ function handleClick(){
                             Get Started
                         </button>
                    </div>
-                  <div className=' flex flex-col my-20 sm:flex-row justify-center items-center gap-10'>
+                  <div className=' flex flex-col my-20 sm:flex-row justify-center items-center sm:gap-10 gap-20'>
                       <FeatureCard index={0} textHeading='Secure' textParagraph='Every vote is secure and counted fairly' icon={<Shield color='white' size={80} className='bg-[#5478FF] p-4 rounded-full'/>}/>
                       <FeatureCard index={1} textHeading='Easy' textParagraph='Simple login no password needed' icon={<Users2 color='white' size={80} className='bg-[#5478FF] p-4 rounded-full'/>}/>
                       <FeatureCard index={2} textHeading='Fair' textParagraph='One Student one vote per post' icon={<CircleCheckBigIcon color='white' size={80} className='bg-[#5478FF] p-4 rounded-full'/>}/>
@@ -38,13 +38,13 @@ function handleClick(){
                </div>
            </div>
            <div className='text-center bottom-0 mt-4 text-white'>
-                <div className='flex gap-2'>
-                    <Link  to='/about'>About us</Link>
-                    <Link  to='/contact'>Contact us</Link>
-                    <Link  to='/terms'>Terms and conditions</Link>
-                    <Link  to='/privacy'>Privacy Policy</Link>
+                <div className='flex gap-2 pl-2'>
+                    <Link className='underline'  to='/about'>About us</Link>
+                    <Link className='underline'  to='/contact'>Contact us</Link>
+                    <Link className='underline'  to='/terms'>Terms and conditions</Link>
+                    <Link className='underline'  to='/privacy'>Privacy Policy</Link>
                 </div>
-                <p className='mt-2'>©{currentYear} E-voter School Elections Made Simple</p>
+                <p className='mt-20'>©{currentYear} E-voter School Elections Made Simple</p>
             </div>
        </div>
     </>

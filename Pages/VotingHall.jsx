@@ -9,13 +9,17 @@ import {OrbitProgress} from 'react-loading-indicators'
 import { userContext } from "../Contexts/userContext";
 
 function VotingHall(){
-    const { votedForCandidates } = useContext(userContext)
-    const[posts,setPosts] = useState([])
+
+    const {votedForCandidates,setVotedForCandidates} = useContext(userContext)
+
+    const [posts,setPosts] = useState([])
     const [candidates,setCandidates] = useState([])
     const [nextPost,setNextPost] = useState(0)
     const [progressBar,setProgressBar] = useState(0)
     const [isClicked,setIsClicked] = useState(null)
     const [loading,setLoading] = useState(false)
+    const [error,setError] = useState(false)
+    const [votedForCandidatesCurrentPost,setVotedForCandidatesCurrentPost] = useState([])
 
     const [nortification,setNortification] = useState({
         errorMessage:'',
@@ -23,6 +27,7 @@ function VotingHall(){
         votedForMessage:'',
         displayMessage:false
     })
+
     const navigate = useNavigate()
     useEffect(()=>{
        async function getData() {
@@ -43,7 +48,7 @@ function VotingHall(){
             if (prefects) {
                 setLoading(false)
                 setCandidates(prefects)
-                console.log(candidates)
+
             }
         }
         getData()
@@ -59,16 +64,64 @@ setProgressBar(percentage)
     function handleNextPost(){
         // Check if user has voted for current post
         const currentPost = posts[nextPost]
-        const hasVotedForCurrentPost = votedForCandidates.some(candidate =>
+
+        const hasVotedForCurrentPost = votedForCandidatesCurrentPost.some(candidate =>
             candidate.prefectorial_Post === currentPost
         )
 
-        if (!hasVotedForCurrentPost) {
+        const currentPostContainsA_Level = candidates.some(candidate => {
+            return candidate.education_Level === 'A-Level'
+        })
+
+        const currentPostContainsO_Level = candidates.some(candidate => {
+            return candidate.education_Level === 'O-Level'
+        })
+
+        const currentPostContainsbothEducation_Levels = currentPostContainsA_Level && currentPostContainsO_Level
+
+        console.log(currentPostContainsbothEducation_Levels)
+
+        let canProceed = false
+        let errorMessage = ''
+
+        if (currentPostContainsbothEducation_Levels){
+            const hasVotedForALevel = votedForCandidatesCurrentPost.some((candidate) => {
+                return candidate.education_Level === "A-Level"
+            })
+            console.log('Has voted A-Level',hasVotedForALevel)
+            const hasVotedForOLevel = votedForCandidatesCurrentPost.some((candidate) => {
+                return candidate.education_Level === "O-Level"
+            })
+            console.log('Has voted O-Level',hasVotedForOLevel)
+            
+            if (hasVotedForALevel && hasVotedForOLevel){
+                canProceed = true
+                setVotedForCandidates((prev) => {
+                    return [...prev,...votedForCandidatesCurrentPost]
+                })
+            } else if(!hasVotedForALevel) {
+                errorMessage = `Please vote for a ${currentPost} A-Level before proceeding.`
+            } else {
+                errorMessage = `Please vote for a ${currentPost} O-Level before proceeding.`
+            }
+        } else {
+            // For posts with only one level or none, require at least one vote
+            if (hasVotedForCurrentPost) {
+                canProceed = true
+                setVotedForCandidates((prev) => {
+                    return [...prev,...votedForCandidatesCurrentPost]
+                })
+            } else {
+                errorMessage = `Please vote for a ${currentPost} before proceeding.`
+            }
+        }
+
+        if (!canProceed) {
             setNortification((prev) => ({
                 ...prev,
                 displayError: true,
                 displayMessage: false,
-                errorMessage: `Please vote for a ${currentPost} before proceeding.`
+                errorMessage: errorMessage
             }))
             return
         }
@@ -81,6 +134,7 @@ setProgressBar(percentage)
             setNextPost(posts.length - 1)
             navigate('/student/submit-vote')
         }
+        setVotedForCandidatesCurrentPost([])
     }
     return(
         <div>
@@ -92,7 +146,7 @@ setProgressBar(percentage)
                 {
                     nortification.displayError ? (
                         <div className="absolute mx-auto w-[98%] left-0 right-0 text-red-600 font-extrabold p-2 rounded-md">
-                            <h2>{nortification.errorMessage || "Vote for one of the candidates below"}</h2>
+                            <p>{nortification.errorMessage || "Vote for one of the candidates below"}</p>
                         </div>
                     ) : (
                         <div className={`absolute flex justify-center items-center left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md font-extrabold p-2`}>
@@ -102,17 +156,20 @@ setProgressBar(percentage)
                     )
                 }
             </div>
-            <div className="flex flex-col justify-center items-center gap-5 sm:flex-row">
+            <div className="flex flex-col flex-wrap justify-center items-center gap-5 sm:flex-row mt-20 sm:mt-0">
                 {
                         loading ? 
                         <div className="h-[200px] mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
                          color="#5478FF" size="medium" text="" textColor="" />
-                         </div> : 
+                         </div> :<>
+                            {
                          candidates.map((candidate,index)=>{
                             return(
-                                <PrefectCard key={index} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} setNortification={setNortification} index={index}/>
+                                <PrefectCard key={index} votedForCandidatesCurrentPost={votedForCandidatesCurrentPost} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} setNortification={setNortification} index={index} setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost}/>
                             )
                         })
+                        }
+                        </>
                 }
             </div>
             <div className="flex mt-20 items-end mx-auto mb-4 px-4 justify-end w-[98%]">
@@ -129,6 +186,8 @@ setProgressBar(percentage)
         </div>
 
     )
+
 }
+
 
 export default VotingHall;

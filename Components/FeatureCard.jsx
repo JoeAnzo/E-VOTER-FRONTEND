@@ -6,7 +6,7 @@ function FeatureCard({textHeading,textParagraph,icon,index = 0}) {
   })
 
   // Calculate delay for stagger effect (only on desktop screens)
-  const delay = window.innerWidth >= 640 ? index * 200 : 0; // 200ms delay between each card on desktop
+  const delay =  index * 200  // 200ms delay between each card on desktop
 
   return (
      <div ref={ref} className='flex flex-col items-center h-full justify-center'>
