@@ -1,12 +1,12 @@
 import { useEffect,useState, useContext} from "react";
 import UserProfile from "../Components/UserProfile";
-import { ArrowRight,ArrowLeft,Check} from "lucide-react";
+import { ArrowRight,Check} from "lucide-react";
 import { fetchPrefectPosts,fetchCandidatesPerPost } from "../Services/ApiCalls";
 import { useNavigate } from "react-router-dom";
-import ProgressBar from "../Components/ProgressBar";
-import PrefectCard from "../Components/PrefectCard";
-import {OrbitProgress} from 'react-loading-indicators'
-import { userContext } from "../Contexts/userContext";
+import {userContext} from "../Contexts/userContext.js";
+import ProgressBar from "../Components/ProgressBar.jsx";
+import PrefectCard from "../Components/PrefectCard.jsx";
+import { OrbitProgress } from 'react-loading-indicators';
 
 function VotingHall(){
 
@@ -31,10 +31,12 @@ function VotingHall(){
     const navigate = useNavigate()
     useEffect(()=>{
        async function getData() {
-        const prefectPosts = await fetchPrefectPosts()
-        if (prefectPosts){
-            setPosts(prefectPosts.prefectorial_posts);
+        const result = await fetchPrefectPosts()
+        if (result.success){
+            setPosts(result.data.prefectorial_posts);
             console.log(posts)
+        } else {
+            setError(true)
         }
        }
        getData()
@@ -43,15 +45,18 @@ function VotingHall(){
 
         async function getData() {
             setLoading(true)
-            const prefects = await fetchCandidatesPerPost(`${posts[nextPost]}`)
-            console.log(prefects)
-            if (prefects) {
-                setLoading(false)
-                setCandidates(prefects)
-
+            const result = await fetchCandidatesPerPost(`${posts[nextPost]}`)
+            console.log(result)
+            setLoading(false)
+            if (result.success) {
+                setCandidates(result.data)
+            } else {
+                setError(true)
             }
         }
-        getData()
+        if (posts.length > 0) {
+            getData()
+        }
     },[nextPost,posts])
 
 useEffect(()=>{
@@ -142,7 +147,7 @@ setProgressBar(percentage)
         <div className="text-xl text-center space-y-5">
             <ProgressBar posts={posts} nextPost={nextPost} setProgressBar={setProgressBar}/>
             <h1 className="text-center text-white text-3xl align-left">Vote your next {posts[nextPost]} prefect</h1>
-            <div className="relative mx-auto min-h-[40px]">
+            <div className="relative mx-auto min-h-10">
                 {
                     nortification.displayError ? (
                         <div className="absolute mx-auto w-[98%] left-0 right-0 text-red-600 font-extrabold p-2 rounded-md">
@@ -159,9 +164,9 @@ setProgressBar(percentage)
             <div className="flex flex-col flex-wrap justify-center items-center gap-5 sm:flex-row mt-20 sm:mt-0">
                 {
                         loading ? 
-                        <div className="h-[200px] mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
-                         color="#5478FF" size="medium" text="" textColor="" />
-                         </div> :<>
+                        <div className="h-50 mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
+                         color="#5478FF" size="medium"/>
+                         </div>:error ? <p className="text-red-700 text-center">Something went wrong</p>:<>
                             {
                          candidates.map((candidate,index)=>{
                             return(
@@ -175,7 +180,7 @@ setProgressBar(percentage)
             <div className="flex mt-20 items-end mx-auto mb-4 px-4 justify-end w-[98%]">
                 {
                     loading ? null :
-                    <button className="bg-[#101540] cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handleNextPost}>
+                    <button className="bg-[#1E293B] cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handleNextPost}>
                         {(nextPost === posts.length - 1) ? 'Submit':'Next'} <ArrowRight color='white'/>
                     </button>
                 }

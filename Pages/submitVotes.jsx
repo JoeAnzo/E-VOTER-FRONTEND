@@ -12,7 +12,7 @@ function SubmitVotes(){
             <h2 className='text-center'>
                 Your Votes have been Submited Successfully
             </h2>
-            <button onClick={handleClick} className='rounded-full p-4 bg-[#5478FF] hover:cursor-pointer hover:opacity-80'>
+            <button onClick={handleClick} className='rounded-full p-4 bg-[#1E293B] hover:cursor-pointer hover:opacity-80'>
                 <ArrowRight/>
             </button>
         </div>

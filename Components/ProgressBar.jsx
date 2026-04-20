@@ -12,12 +12,12 @@ function ProgressBar({posts,nextPost,progressBar,setProgressBar}){
         
         },[nextPost])
     return(
-        <div className="bg-[#101540] text-white mt-4 space-y-4 w-[98%] mx-auto py-10 rounded-md px-2">
+        <div className="bg-[#1E293B] text-white mt-4 space-y-4 w-[98%] mx-auto py-10 rounded-md px-2">
             <div className="flex justify-between">
                 <div>
                     <h2 className="text-left">
                     Your Progress
-                    <p>You have {posts.length - (nextPost + 1)} Prefect positions left</p>
+                    <p>You have {posts.length > 0 ? posts.length - (nextPost + 1):0} Prefect positions left</p>
                     </h2>
                 </div>
                 <div>

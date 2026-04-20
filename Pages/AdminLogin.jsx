@@ -1,10 +1,9 @@
+import { userContext } from '../Contexts/userContext.js'
+import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {User}  from 'lucide-react'
 import { getAdminUser } from '../Services/ApiCalls.js'
 import {EyeIcon,EyeClosed} from 'lucide-react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { userContext } from '../Contexts/userContext.js'
-import { useContext } from 'react'
 function AdminLogin(){
 
     const {setIsAuth} = useContext(userContext)
@@ -17,9 +16,6 @@ function AdminLogin(){
     })
     const navigate = useNavigate()
 
-    function checkForFormErrors(){
-        
-    }
 
     function handleUserName(e){
         setAdminUserDetails(
@@ -68,31 +64,31 @@ function AdminLogin(){
             })
         }
         else {
-            const adminUser = await getAdminUser(adminUserDetails.Username,adminUserDetails.password)
-            console.log(adminUser)
-             if (adminUser) {
+            const result = await getAdminUser(adminUserDetails.Username,adminUserDetails.password)
+            console.log(result)
+            if (result.success) {
+                const adminUser = result.data
                  if (adminUser?.adminUser){
                     setIsAuth(true)
                     navigate("/admin/dashboard")
+                } else if (!adminUser.adminUser) {
+                    setError((prev)=>{
+                        return {
+                            ...prev,
+                            error:true,
+                            errorMessage:adminUser.message
+                        }
+                    })
                 }
-             if (!adminUser.adminUser) {
+            } else {
                 setError((prev)=>{
                     return {
                         ...prev,
                         error:true,
-                        errorMessage:adminUser.message
+                        errorMessage:'Something went wrong !'
                     }
                 })
             }
-        } else {
-            setError((prev)=>{
-                return {
-                    ...prev,
-                    error:true,
-                    errorMessage:'Something went wrong !'
-                }
-            })
-        }
         }
         
     }
@@ -103,7 +99,7 @@ function AdminLogin(){
 
     return(
         <div className="h-screen flex items-center justify-center">
-            <div className='space-y-5 flex flex-col items-center bg-[#101540] shadow-xl p-6 rounded-xl sm:w-[500px] w-[90%]'>
+            <div className='space-y-5 flex flex-col items-center bg-[#1E293B] shadow-xl p-6 rounded-xl sm:w-[500px] w-[90%]'>
                 <h2 className='text-white text-3xl text-center'>Admin Login</h2>
                 <div className='bg-[#5478FF] p-5  flex items-center justify-center rounded-full'>
                     <User color='white' size={60}/>

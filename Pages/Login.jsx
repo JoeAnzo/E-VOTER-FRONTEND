@@ -23,8 +23,12 @@ const navigate = useNavigate()
 const searchTerm = useDebounce(name,1000)
 useEffect(()=>{
 async function getData(){
-  const results = await searchStudent(searchTerm)
-  setSearchResults(results)
+  const result = await searchStudent(searchTerm)
+  if (result.success) {
+    setSearchResults(result.data)
+  } else {
+    setSearchResults([])
+  }
 }
 getData()
 },[searchTerm])
@@ -66,7 +70,13 @@ function errorhandler(){
   }
 }
 async function checkForStudent(){
-  const Student = await fetchStudent(name,grade,stream)
+  const result = await fetchStudent(name,grade,stream)
+  if (!result.success) {
+    setError(true)
+    setErrorMessage('Something went wrong')
+    return
+  }
+  const Student = result.data
   if (Student.querySearchResult.length > 0){
     localStorage.setItem("studentInfo",JSON.stringify({
         name:name,
@@ -94,9 +104,9 @@ async function handleSubmit(e){
 
 
   return (
-      <div className='flex items-center justify-center flex-col h-screen  bg-[#192346] shadow-2xl'>
+      <div className='flex items-center justify-center flex-col h-screen  bg-[#0F172A] shadow-2xl'>
         <form 
-        onSubmit={handleSubmit} className='bg-[#101540] shadow-xl p-6 rounded-xl mt-10 space-y-4 sm:w-[500px] w-[90%]'>
+        onSubmit={handleSubmit} className='bg-[#1E293B] shadow-xl p-6 rounded-xl mt-10 space-y-4 sm:w-125 w-[90%]'>
           <div className="flex flex-col justify-center items-center space-y-2">
             <Logo/>
             <h1 className='text-white'>Student Login</h1>

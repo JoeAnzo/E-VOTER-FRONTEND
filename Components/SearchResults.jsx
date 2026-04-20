@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { selectContext } from "../Contexts/selectContext";
-
 function SearchResults({results}){
     const {setName,setGrade,setStream,setDisplaySearch} = useContext(selectContext)
     // if (results.Students){
     //   setDisplaySearch(true)
     // }
+   
     function handleClick(name,grade,stream){
       setName(name)
       setGrade(grade)

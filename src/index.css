@@ -16,5 +16,13 @@ input{
   outline:none;
 }
 body{
-  background:#192346;
+  background:#0F172A;
+}
+.hide-scrollbar {
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display:none;
 }

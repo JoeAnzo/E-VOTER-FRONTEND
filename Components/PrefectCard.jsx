@@ -48,8 +48,8 @@ function PrefectCard({candidate,isClicked,setIsClicked,id,setNortification,index
 
     return(
         <>
-        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} style={{ transitionDelay: `${index * 0.15}s` }} className={`flex transition-all transition-ease duration-500 -translate-x-20 sm:translate-y-20 opacity-0 ${isVisible ? 'sm:translate-y-0 translate-x-0 opacity-100' : ''} w-[98%] sm:w-[500px] pr-2  text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#101540] rounded-md ${(isClicked || checked) ? 'border-2 border-[#5478FF]':''}`}>
-            <img className='h-[200px] w-[150px] sm:w-[200px] rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
+        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} style={{ transitionDelay: `${index * 0.15}s` }} className={`flex transition-all transition-ease duration-500 -translate-x-20 sm:translate-y-20 opacity-0 ${isVisible ? 'sm:translate-y-0 translate-x-0 opacity-100' : ''} w-[98%] sm:w-[500px] pr-2  text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#1E293B] rounded-md ${(isClicked || checked) ? 'border-2 border-[#5478FF]':''}`}>
+            <img className='h-50 w-37.5 sm:w-50 rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
             <div>
                 <p>{candidate.Candidate_Name}</p>
                 <p>{candidate.education_Level}</p>

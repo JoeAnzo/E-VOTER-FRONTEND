@@ -3,7 +3,7 @@ import {User}  from 'lucide-react'
 function StaffLogin(){
     return(
         <div className="h-screen flex items-center justify-center">
-            <div className='space-y-5 flex flex-col items-center bg-[#101540] shadow-xl p-6 rounded-xl sm:w-[500px] w-[90%]'>
+            <div className='space-y-5 flex flex-col items-center bg-[#1E293B] shadow-xl p-6 rounded-xl sm:w-[500px] w-[90%]'>
                 <h2 className='text-white text-3xl text-center'>Staff Login</h2>
                 <div className='bg-[#5478FF] p-5  flex items-center justify-center rounded-full'>
                     <User color='white' size={60}/>

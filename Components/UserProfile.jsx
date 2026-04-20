@@ -7,7 +7,7 @@ function UserProfile({studentInfo}) {
    console.log(studentInfo)
   return (
    <nav 
-   className='flex justify-between items-center bg-[#101540] shadow-xl pl-2 py-4'>
+   className='flex justify-between items-center bg-[#1E293B] shadow-xl pl-2 py-4'>
          <div className='flex items-center justify-center gap-2'>
             <Logo/>
             <h1 className='text-2xl text-white'>E voter</h1>

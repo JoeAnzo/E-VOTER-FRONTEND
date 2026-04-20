@@ -16,7 +16,7 @@ function handleClick(){
   return (
     
     <>
-       <div className='flex flex-col justify-center items-center relative bg-[#192346]'>
+       <div className='flex flex-col justify-center items-center relative bg-[#0F172A]'>
            <div className='flex flex-col justify-center items-center pt-4'>
                 <Logo/>
                 <h1 className='my-4 text-3xl text-white'>E voter</h1>
@@ -40,7 +40,7 @@ function handleClick(){
            <div className='text-center bottom-0 mt-4 text-white'>
                 <div className='flex gap-2 pl-2'>
                     <Link className='underline'  to='/about'>About us</Link>
-                    <Link className='underline'  to='/contact'>Contact us</Link>
+                    <Link className='underline'  to='/Contact-Us'>Contact us</Link>
                     <Link className='underline'  to='/terms'>Terms and conditions</Link>
                     <Link className='underline'  to='/privacy'>Privacy Policy</Link>
                 </div>
