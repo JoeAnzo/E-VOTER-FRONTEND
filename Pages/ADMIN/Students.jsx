@@ -94,8 +94,9 @@ function Students() {
   return (
     <div className="h-screen relative">
         <Helmet>
-            <title>Admin Students</title>
-            <meta name="description" content="Manage students from here forexample adding students and more" />
+            <title>Manage Students</title>
+            <meta name="description" content="Manage students for your school's elections with ease using the E-voter platform. Add, edit, and organize students to ensure a smooth and efficient election process." />
+            <meta name="keywords" content="E-voter, manage students, school elections, add students, edit students, organize students, election process" />
         </Helmet>
         <AdminNavBar/>
         <div className="h-[90%] flex"> 

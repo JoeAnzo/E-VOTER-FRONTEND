@@ -1,16 +1,18 @@
-import { useEffect,useState, useContext} from "react";
+import { useEffect,useState, useContext, useRef } from "react";
 import UserProfile from "../Components/UserProfile";
 import { ArrowRight,Check} from "lucide-react";
-import { fetchPrefectPosts,fetchCandidatesPerPost } from "../Services/ApiCalls";
+import { fetchPrefectPosts,fetchCandidatesPerPost,submitVotes } from "../Services/ApiCalls";
 import { useNavigate } from "react-router-dom";
 import {userContext} from "../Contexts/userContext.js";
 import ProgressBar from "../Components/ProgressBar.jsx";
 import PrefectCard from "../Components/PrefectCard.jsx";
 import { OrbitProgress } from 'react-loading-indicators';
+import {Helmet} from 'react-helmet'
 
 function VotingHall(){
+    const scrollContainerRef = useRef(null)
 
-    const {votedForCandidates,setVotedForCandidates} = useContext(userContext)
+    const {votedForCandidates,setVotedForCandidates,OTP} = useContext(userContext)
 
     const [posts,setPosts] = useState([])
     const [candidates,setCandidates] = useState([])
@@ -59,12 +61,16 @@ function VotingHall(){
         }
     },[nextPost,posts])
 
-useEffect(()=>{
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+    }, [nextPost])
 
-const percentage = posts.length > 0 ? Math.min(nextPost/(posts.length - 1) * 100,100) : 0
-setProgressBar(percentage)
-
-},[nextPost])
+    useEffect(() => {
+        const percentage = posts.length > 0 ? Math.min(nextPost/(posts.length - 1) * 100,100) : 0
+        setProgressBar(percentage)
+    },[nextPost])
 
     function handleNextPost(){
         // Check if user has voted for current post
@@ -131,37 +137,53 @@ setProgressBar(percentage)
             return
         }
 
+        
         setIsClicked(null)
         setNextPost((prev) => prev + 1)
         setNortification(prev => ({...prev, displayMessage: false, displayError: false}))
 
+        async function submitVotedForCandidates(){
+            const submitedVotes = await submitVotes(votedForCandidates,OTP)
+            console.log(submitedVotes)
+        }
         if (nextPost === posts.length - 1){
             setNextPost(posts.length - 1)
             navigate('/student/submit-vote')
         }
+        submitVotedForCandidates()
         setVotedForCandidatesCurrentPost([])
     }
     return(
-        <div>
-        <UserProfile studentInfo={JSON.parse(localStorage.getItem("studentInfo"))}/>
-        <div className="text-xl text-center space-y-5">
+        <div className="bg-white dark:bg-[#0F172A] flex flex-col h-screen">
+        <Helmet>
+            <title>Voting Hall</title>
+            <meta name="description" content="Participate in your school's democratic process by voting for your preferred candidates in the E-voter platform." />
+            <meta name="keywords" content="E-voter, school elections, digital voting, student voting, school leaders, democratic process" />
+        </Helmet>
+        <div className="shrink-0">
+            <UserProfile studentInfo={JSON.parse(localStorage.getItem("studentInfo"))}/>
             <ProgressBar posts={posts} nextPost={nextPost} setProgressBar={setProgressBar}/>
-            <h1 className="text-center text-white text-3xl align-left">Vote your next {posts[nextPost]} prefect</h1>
-            <div className="relative mx-auto min-h-10">
-                {
-                    nortification.displayError ? (
-                        <div className="absolute mx-auto w-[98%] left-0 right-0 text-red-600 font-extrabold p-2 rounded-md">
-                            <p>{nortification.errorMessage || "Vote for one of the candidates below"}</p>
-                        </div>
-                    ) : (
-                        <div className={`absolute flex justify-center items-center left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md font-extrabold p-2`}>
-                            <Check color='#5478FF'/>
-                            <p className="text-[#5478FF] ml-2">{nortification.votedForMessage}</p>
-                        </div>
-                    )
-                }
+            <h1 className="text-center dark:text-white text-slate-900 mt-8 text-3xl align-left">Vote your next {posts[nextPost]} prefect</h1>
+        </div>
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
+        <div className="text-xl text-center space-y-5">
+            <div className="">
+                <div className="mx-auto top-95 z-40 absolute left-0 right-0">
+                    {
+                        nortification.displayError ? (
+                            <div className="mx-auto w-[98%] left-0 right-0 text-red-600 font-extrabold p-2 rounded-md bg-red-50 border dark:bg-[#1E293B] border-red-200">
+                                <p>{nortification.errorMessage || "Vote for one of the candidates below"}</p>
+                            </div>
+                        ) : (
+                            <div className={`flex justify-center items-center left-0 right-0 ${nortification.displayMessage ? 'visible' : 'hidden'} mx-auto w-[98%] rounded-md font-extrabold p-2 bg-blue-50 border dark:bg-[#1E293B] border-blue-200`}>
+                                <Check color='#5478FF'/>
+                                <p className="text-[#5478FF] ml-2">{nortification.votedForMessage}</p>
+                            </div>
+                        )
+                    }
+                </div>
             </div>
-            <div className="flex flex-col flex-wrap justify-center items-center gap-5 sm:flex-row mt-20 sm:mt-0">
+            <div className="flex flex-col flex-wrap hide-scrollbar justify-center sticky items-center gap-5 sm:flex-row mt-20 pt-10 sm:mt-0">
                 {
                         loading ? 
                         <div className="h-50 mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
@@ -173,19 +195,19 @@ setProgressBar(percentage)
                                 <PrefectCard key={index} votedForCandidatesCurrentPost={votedForCandidatesCurrentPost} candidate={candidate} setIsClicked={setIsClicked} isClicked={isClicked === index} id={index} setNortification={setNortification} index={index} setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost}/>
                             )
                         })
-                        }
+                }
                         </>
                 }
             </div>
-            <div className="flex mt-20 items-end mx-auto mb-4 px-4 justify-end w-[98%]">
+            <div className="flex py-4 my-20 items-end mx-auto mb-4 px-4 justify-end w-[98%]">
                 {
                     loading ? null :
-                    <button className="bg-[#1E293B] cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handleNextPost}>
+                    <button className="dark:bg-[#1E293B] bg-[#5478FF] cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handleNextPost}>
                         {(nextPost === posts.length - 1) ? 'Submit':'Next'} <ArrowRight color='white'/>
                     </button>
                 }
             </div>
-
+        </div>
         </div>
         
         </div>

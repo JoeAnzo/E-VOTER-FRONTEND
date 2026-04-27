@@ -2,10 +2,15 @@ import AdminNavBar from "../../Components/ADMIN/AdminNavBar"
 import SideBar from "../../Components/ADMIN/SideBar"
 import AnalysisCard from "../../Components/ADMIN/AnalysisCard"
 import { GraduationCap,Users,User } from "lucide-react"
-
+import { Helmet } from "react-helmet"
 function GenerateOtps() {
   return (
     <div className="h-screen relative">
+        <Helmet>
+            <title>Generate OTPs</title>
+            <meta name="description" content="Generate one-time passwords (OTPs) for staff and students to use in the school election process." />
+            <meta name="keywords" content="E-voter, generate OTPs, one-time passwords, school elections, student voting, staff voting" />
+        </Helmet>
         <AdminNavBar/>
         <div className="h-[90%] flex"> 
             <div className="sm:w-[20%]">

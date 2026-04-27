@@ -8,6 +8,8 @@ function PrefectCard({candidate,isClicked,setIsClicked,id,setNortification,index
         threshold:0.5
     })
 
+    console.log(isVisible)
+
     function handleClick(candidate){
 
         console.log(votedForCandidatesCurrentPost)
@@ -37,7 +39,11 @@ function PrefectCard({candidate,isClicked,setIsClicked,id,setNortification,index
             votedForMessage: `Voted for ${candidate.Candidate_Name} for ${candidate.prefectorial_Post} ${candidate.education_Level}`
         }))
 
-        setVotedForCandidatesCurrentPost((prev) => [...prev, candidate])
+        setVotedForCandidatesCurrentPost((prev) => [...prev, {
+            Candidate_Name: candidate.Candidate_Name,
+            education_Level: candidate.education_Level,
+            prefectorial_Post: candidate.prefectorial_Post
+        }])
     }
 
     const hasAlreadyVotedForThisCandidate = votedForCandidatesCurrentPost.some((votedCandidate)=>{
@@ -48,7 +54,13 @@ function PrefectCard({candidate,isClicked,setIsClicked,id,setNortification,index
 
     return(
         <>
-        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} style={{ transitionDelay: `${index * 0.15}s` }} className={`flex transition-all transition-ease duration-500 -translate-x-20 sm:translate-y-20 opacity-0 ${isVisible ? 'sm:translate-y-0 translate-x-0 opacity-100' : ''} w-[98%] sm:w-[500px] pr-2  text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[#1E293B] rounded-md ${(isClicked || checked) ? 'border-2 border-[#5478FF]':''}`}>
+        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} style={{
+            transform: isVisible ? 'translateX(0) translateY(0)' : 'translateX(-5rem) translateY(2rem)',
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 500ms ease-out, transform 500ms ease-out',
+            transitionDelay: `${index * 0.15}s`,
+            willChange: 'opacity, transform'
+          }} className={`flex w-[98%] sm:w-125 pr-2 text-slate-900 dark:text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[F9FAFB] dark:bg-[#1E293B] rounded-md ${(isClicked || checked) ? 'border-2 border-[#5478FF]':''}`}>
             <img className='h-50 w-37.5 sm:w-50 rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
             <div>
                 <p>{candidate.Candidate_Name}</p>

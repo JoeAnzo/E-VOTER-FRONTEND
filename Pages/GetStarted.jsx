@@ -7,6 +7,8 @@ import votingIMG from '../src/assets/voting.png'
 import Logo from '../Components/Logo';
 import FeatureCard from '../Components/FeatureCard.jsx';
 import { getCurrentYear } from '../utils/currentDate.js';
+import ThemeIcon from '../Components/ThemeIcon.jsx';
+import {Helmet} from 'react-helmet'
 function GetStarted() {
   const navigate = useNavigate()
   const currentYear = getCurrentYear()
@@ -16,13 +18,21 @@ function handleClick(){
   return (
     
     <>
-       <div className='flex flex-col justify-center items-center relative bg-[#0F172A]'>
+       <Helmet>
+            <title>Get Started</title>
+            <meta name="description" content="Join E-voter today and experience the future of school elections. Our secure, easy-to-use platform empowers students to vote for their school leaders with confidence. Say goodbye to paper ballots and hello to a seamless digital voting experience. Get started now and make your voice heard in your school's democratic process." />
+            <meta name="keywords" content="E-voter, school elections, digital voting, secure voting, easy-to-use platform, student voting, school leaders, democratic process" />
+       </Helmet>
+       <div className='flex flex-col justify-center items-center relative bg-white dark:bg-[#0F172A]'>
+           <div className='absolute right-10 top-10'>
+            <ThemeIcon/>
+           </div>
            <div className='flex flex-col justify-center items-center pt-4'>
-                <Logo/>
-                <h1 className='my-4 text-3xl text-white'>E voter</h1>
-                <img className='h-[300px] w-[300px]' src={votingIMG} alt="voting-image" />
+                  <Logo/>
+                <h1 className='my-4 text-3xl text-slate-900 dark:text-white'>Evoter</h1>
+                <img className='h-75 w-75' src={votingIMG} alt="voting-image" />
                <div>
-                  <p className='text-center text-white my-10'>
+                  <p className='text-center text-slate-900 dark:text-white my-10'>
                     Your voice. Elect your school leaders <br/> digitally.
                   </p>
                   <div className='flex mt-10'>
@@ -37,7 +47,7 @@ function handleClick(){
                   </div>
                </div>
            </div>
-           <div className='text-center bottom-0 mt-4 text-white'>
+           <div className='text-center bottom-0 mt-4 dark:text-white text-slate-900'>
                 <div className='flex gap-2 pl-2'>
                     <Link className='underline'  to='/about'>About us</Link>
                     <Link className='underline'  to='/Contact-Us'>Contact us</Link>

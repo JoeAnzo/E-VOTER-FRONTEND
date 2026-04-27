@@ -12,7 +12,7 @@ function ProgressBar({posts,nextPost,progressBar,setProgressBar}){
         
         },[nextPost])
     return(
-        <div className="bg-[#1E293B] text-white mt-4 space-y-4 w-[98%] mx-auto py-10 rounded-md px-2">
+        <div className="bg-white dark:bg-[#1E293B] text-slate-900 dark:text-white mt-4 space-y-4 w-[98%] mx-auto py-10 rounded-md px-2 shadow-2xl">
             <div className="flex justify-between">
                 <div>
                     <h2 className="text-left">

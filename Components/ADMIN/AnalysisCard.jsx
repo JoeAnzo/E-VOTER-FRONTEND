@@ -2,11 +2,12 @@
 import {useState,useEffect} from 'react'
 function AnalysisCard({heading,icon,numberDisplay}) {
   const [animateFigures,setAnimateFigures] = useState(0)
-
+  console.log(numberDisplay)
   useEffect(() => {
+    setAnimateFigures(0)
     const interval = setInterval(() => {
       setAnimateFigures((prevCount) => {
-        if (prevCount >= 1000) {
+        if (prevCount >= numberDisplay) {
           clearInterval(interval)
           return prevCount
         }
@@ -14,14 +15,14 @@ function AnalysisCard({heading,icon,numberDisplay}) {
       })
     }, 10)
     return () => clearInterval(interval)
-  }, [])
+  }, [numberDisplay])
   return (
-    <div className="text-white py-10 rounded-lg shadow-2xl hover:cursor-pointer transition-all transition-ease hover:-translate-y-4 duration-500 hover:bg-[#5478FF] bg-[#1E293B] sm:w-100 w-[98%] flex items-center justify-evenly gap-4">
+    <div className="dark:text-white hover:text-white text-slate-900 py-10 rounded-lg hover:cursor-pointer bg-white dark:bg-[#1E293B] shadow-md hover:shadow-xl transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:scale-[1.01] hover:bg-[#5478FF] sm:w-full w-[98%] flex items-center justify-evenly gap-4">
         <div className="flex flex-col items-center justify-center">
           <h2>{heading}</h2>
           <h2>{animateFigures}</h2>
         </div>
-        <div className="bg-[#0F172A] p-2 rounded-md">
+        <div className="dark:bg-[#0F172A] bg-[#5478FF] p-2 rounded-md">
           {icon}
         </div>
     </div>

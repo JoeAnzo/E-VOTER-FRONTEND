@@ -33,14 +33,38 @@ async function fetchStudent(name, Class, Stream) {
 async function fetchPrefectPosts() {
   try {
     const response = await fetch(`${base_url}/v1/api/Candidates/posts`)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! status: ${response.status}`)
+    // }
     const data = await response.json()
     return { success: true, data }
   } catch (error) {
     console.log(error.message)
     return { success: false, error: error.message }
+  }
+}
+
+async function submitVotes(votes,code){
+  console.log(votes)
+  try {
+    const response = await fetch(`${base_url}/v1/api/Votes`,{
+      method:'POST',
+      headers:{
+        'content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        votersCode:code,
+        votes:votes
+      })
+    })
+
+    if (!response.ok){
+      throw new Error(`HTTP error ! status:${response.status}`)
+    }
+      const data = await response.json()
+      return {success:true,data:data}
+  } catch (error) {
+    return {success:false,error:error.message}
   }
 }
 
@@ -95,6 +119,25 @@ async function fetchStudents(){
     }
   } catch (error) {
     console.log(error.message)
+    return { success: false, error: error.message } 
+  }
+}
+
+async function fetchStaffMembers(){
+  try {
+    const response = await fetch(`${base_url}/v1/api/Staff`)
+    if (response.ok){
+      const data = await response.json()
+      return {
+        success:true,
+        data:data
+      }
+    } else {
+      throw new Error(`HTTP Error! status: ${response.status}`)
+    }
+  } catch (error) {
+    console.log(error.message)
+    return { success: false, error: error.message } 
   }
 }
 
@@ -112,6 +155,7 @@ async function fetchStudentsPerClass(grade){
     }
   } catch (error) {
     console.log(error.message)
+    return { success: false, error: error.message }
   }
 }
 
@@ -129,7 +173,28 @@ async function fetchPrefects(){
     }
   } catch (error) {
     console.log(error.message)
+    return { success: false, error: error.message }
   }
 }
 
-export { searchStudent, fetchStudent, fetchPrefectPosts, fetchCandidatesPerPost, getAdminUser,fetchStudents,fetchPrefects,fetchStudentsPerClass }
+async function fetchResultsPerPost(post) {
+  try {
+    const respond = await fetch(`${base_url}/v1/api/Votes/${post}`)
+    if (respond.ok){
+      const results = await respond.json()
+      return {
+        success:true,
+        data:results
+      }
+    } else {
+      throw new Error(`HTTP Error ! status ${respond.status}`)
+    }
+  } catch (error) {
+    return {
+      success:false,
+      error:error.message
+    }
+  }
+}
+
+export {submitVotes,fetchStaffMembers,fetchResultsPerPost,searchStudent, fetchStudent, fetchPrefectPosts, fetchCandidatesPerPost, getAdminUser,fetchStudents,fetchPrefects,fetchStudentsPerClass }

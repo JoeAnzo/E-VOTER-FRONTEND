@@ -5,9 +5,11 @@ import Dropdown from '../Components/DropDown.jsx'
 import SearchResults from '../Components/SearchResults.jsx';
 import Logo from '../Components/Logo.jsx';
 import { selectContext } from '../Contexts/selectContext.js';
+import ThemeIcon from '../Components/ThemeIcon.jsx';
 import { userContext } from '../Contexts/userContext.js';
 import {searchStudent,fetchStudent} from '../Services/ApiCalls.js';
 import useDebounce from '../Hooks/useDebounce.jsx';
+import {Helmet} from 'react-helmet'
 function Login() {
 const {name,setName,grade,setGrade,stream,setStream,OTP,setOTP,setIsAuth} = useContext(userContext)
 const [searchResults,setSearchResults] = useState([])
@@ -84,9 +86,14 @@ async function checkForStudent(){
         stream:stream
       }))
     if (Student.querySearchResult[0].otp === parseInt(OTP)){
-      setIsAuth(true)
-      setError(false)
-      navigate('/student/voting-hall')
+      if (Student.querySearchResult[0].hasVoted){
+        setError(true)
+        setErrorMessage('Student has already voted')
+      } else {
+        setError(false)
+        setIsAuth(true)
+        navigate('/student/voting-hall')
+      }
     } else {
       setError(true)
       setErrorMessage('Invalid OTP code try again')
@@ -104,20 +111,28 @@ async function handleSubmit(e){
 
 
   return (
-      <div className='flex items-center justify-center flex-col h-screen  bg-[#0F172A] shadow-2xl'>
+      <div className='flex items-center justify-center flex-col bg-white dark:bg-[#0F172A] shadow-2xl'>
+        <Helmet>
+            <title>Student Login</title>
+            <meta name="description" content="Login to E-voter as a student and participate in your school's democratic process. Our secure and easy-to-use platform allows you to vote for your school leaders with confidence. Enter your details, including your name, class, stream, and OTP code, to access the voting hall and make your voice heard in shaping the future of your school." />
+            <meta name="keywords" content="E-voter student login, secure voting platform, easy-to-use voting system, student voting, school elections, digital voting experience, OTP authentication, democratic process" />
+        </Helmet>
         <form 
-        onSubmit={handleSubmit} className='bg-[#1E293B] shadow-xl p-6 rounded-xl mt-10 space-y-4 sm:w-125 w-[90%]'>
+        onSubmit={handleSubmit} className='dark:bg-[#1E293B] bg-[F9FAFB] shadow-xl p-6 rounded-xl mt-10 space-y-4 sm:w-125 w-[90%] relative'>
+          <div className='absolute top-10 right-10'>
+            <ThemeIcon/>
+          </div>
           <div className="flex flex-col justify-center items-center space-y-2">
             <Logo/>
-            <h1 className='text-white'>Student Login</h1>
-            <p className='text-white'>Enter your details to start voting</p>
+            <h1 className='dark:text-white text-slate-900'>Student Login</h1>
+            <p className='dark:text-white text-slate-900'>Enter your details to start voting</p>
           </div>
-          <h2 className='text-white'>Student's Name</h2>
+          <h2 className='dark:text-white text-slate-900'>Student's Name</h2>
           <div className='relative'>
               <input
                 onClick={handleInputClick} 
                 onChange={handleInput} value={name} 
-                className={`bg-gray-100 text-[#5478FF] rounded-xl py-2.5 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='eg. Mukasa Brian'/>
+                className={`dark:bg-gray-100 bg-gray-300 text-[#5478FF] rounded-xl py-2.5 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='eg. Mukasa Brian'/>
               <selectContext.Provider value={{setName,setGrade,setStream,setDisplaySearch}}>
                   {
                     displaySearch ? <SearchResults results={searchResults}/>:null
@@ -125,26 +140,26 @@ async function handleSubmit(e){
                   
               </selectContext.Provider>
           </div>
-          <h2 className='text-white'>Class</h2>
+          <h2 className='dark:text-white text-slate-900'>Class</h2>
           <div
           onClick={handleClickClass}
-          className={`flex text-[#5478FF] justify-between relative bg-gray-100 py-2.5 pl-2 rounded-xl ${focusClass?'border-[#5478FF] border-2':''}`}>
+          className={`flex text-[#5478FF] justify-between relative dark:bg-gray-100 bg-gray-300 py-2.5 pl-2 rounded-xl ${focusClass?'border-[#5478FF] border-2':''}`}>
             {grade === '' ? 'Select Class':grade} <ChevronDown/>
             <selectContext.Provider value={{grade,setGrade}}>
                 <Dropdown options={['S1','S2','S3','S4','S5','S6']} show={showClass}/>
             </selectContext.Provider>
           </div>
-          <h2 className='text-white'>Stream</h2> 
+          <h2 className='dark:text-white text-slate-900'>Stream</h2> 
            <div
            onClick={handleClickStream}
-            className={`flex text-[#5478FF] justify-between relative bg-gray-100 py-2.5 pl-2 rounded-xl ${focusStream?'border-[#5478FF] border-2':''}`}>
+            className={`flex text-[#5478FF] justify-between relative bg-gray-300 dark:bg-gray-100 py-2.5 pl-2 rounded-xl ${focusStream?'border-[#5478FF] border-2':''}`}>
              {stream === '' ? 'Select Stream':stream} <ChevronDown/>
              <selectContext.Provider value={{stream,setStream}}>
                 <Dropdown options={['A','B','C','D']} form6={['Arts','Physicals','Biologicals']} show={showStream} grade={grade}/>
              </selectContext.Provider>
           </div>
-          <h2 className='text-white'>Enter your OTP</h2>
-          <input type="text" value={OTP} onChange={(e) => setOTP(e.target.value)} className={`bg-gray-100 text-[#5478FF] rounded-xl py-2.5 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='Enter your otp here' />
+          <h2 className='dark:text-white text-slate-900'>Enter your OTP</h2>
+          <input type="text" value={OTP} onChange={(e) => setOTP(e.target.value)} className={`bg-gray-300 dark:bg-gray-100 text-[#5478FF] rounded-xl py-2.5 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='Enter your otp here' />
           <p className='text-center text-red-700'>
             {
               error ? errorMessage : ''
@@ -153,8 +168,8 @@ async function handleSubmit(e){
            <button onClick={checkForStudent} type='submit' className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer hover:opacity-80'>
              Enter Voting Hall
            </button>
-           <div className='text-center text-white'>
-              <Link to='/admin/auth/login' className='text-white underline'>Am an administrator</Link> OR <Link to='/auth/login/Staff' className='text-white underline'>Am a Staff member</Link>   
+           <div className='text-center dark:text-white text-slate-900'>
+              <Link to='/admin/auth/login' className=' underline'>Am an administrator</Link> OR <Link to='/auth/login/Staff' className='underline'>Am a Staff member</Link>   
            </div>
         </form>
       </div>

@@ -2,7 +2,7 @@ import useInView from '../Hooks/useInView.jsx'
 
 function FeatureCard({textHeading,textParagraph,icon,index = 0}) {
   const [ref, isVisible] = useInView({
-    threshold:1
+    threshold:0.5
   })
 
   // Calculate delay for stagger effect (only on desktop screens)
@@ -11,20 +11,37 @@ function FeatureCard({textHeading,textParagraph,icon,index = 0}) {
   return (
      <div ref={ref} className='flex flex-col items-center h-full justify-center'>
         <div 
-          className={`transition-all duration-500 -translate-x-20 opacity-0 ${isVisible ? 'opacity-100 translate-x-0' : ''}`}
-          style={{ transitionDelay: `${delay}ms` }}
+          style={{
+            transform: isVisible ? 'translateX(0)' : 'translateX(-5rem)',
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 500ms ease-out, transform 500ms ease-out',
+            transitionDelay: `${delay}ms`,
+            willChange: 'opacity, transform'
+          }}
         >
           {icon}
         </div>
         <h2 
-          className={`my-2 transition-all duration-500 text-white ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-30 opacity-0'}`}
-          style={{ transitionDelay: `${delay + 100}ms` }}
+          className='my-2 text-slate-900 dark:text-white'
+          style={{
+            transform: isVisible ? 'translateY(0)' : 'translateY(2rem)',
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 500ms ease-out, transform 500ms ease-out',
+            transitionDelay: `${delay + 100}ms`,
+            willChange: 'opacity, transform'
+          }}
         >
           {textHeading}
         </h2>
         <p 
-          className={`text-white transition-all duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-30 opacity-0'}`}
-          style={{ transitionDelay: `${delay + 200}ms` }}
+          className='dark:text-white text-slate-900'
+          style={{
+            transform: isVisible ? 'translateY(0)' : 'translateY(2rem)',
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 500ms ease-out, transform 500ms ease-out',
+            transitionDelay: `${delay + 200}ms`,
+            willChange: 'opacity, transform'
+          }}
         >
           {textParagraph}
         </p>

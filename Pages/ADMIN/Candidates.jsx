@@ -6,6 +6,7 @@ import CandidateDetails from "../../Components/ADMIN/CandidateDetails"
 import { fetchPrefects } from "../../Services/ApiCalls"
 import { useEffect,useState } from "react"
 import { OrbitProgress } from "react-loading-indicators"
+import {Helmet} from 'react-helmet'
 
 function Candidates() {
     const [candidatesList,setCandidatesList] = useState([])
@@ -25,6 +26,11 @@ function Candidates() {
     },[])
   return (
     <div className="h-screen relative">
+        <Helmet>
+            <title>Manage Candidates</title>
+            <meta name="description" content="Manage candidates for your school's elections with ease using the E-voter platform. Add, edit, and organize candidates to ensure a smooth and efficient election process." />
+            <meta name="keywords" content="E-voter, manage candidates, school elections, add candidates, edit candidates, organize candidates, election process" />
+        </Helmet>
         <AdminNavBar/>
         <div className="h-full flex"> 
             <div className="sm:w-[20%]">

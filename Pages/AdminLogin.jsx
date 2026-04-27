@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import {User}  from 'lucide-react'
 import { getAdminUser } from '../Services/ApiCalls.js'
 import {EyeIcon,EyeClosed} from 'lucide-react'
+import {Helmet} from 'react-helmet'
 function AdminLogin(){
 
     const {setIsAuth} = useContext(userContext)
@@ -99,6 +100,11 @@ function AdminLogin(){
 
     return(
         <div className="h-screen flex items-center justify-center">
+            <Helmet>
+                <title>Admin Login</title>
+                <meta name="description" content="Secure admin login for the E-voter platform. Access your school's election management dashboard to oversee and manage the election process with ease." />
+                <meta name="keywords" content="E-voter, admin login, secure login, school elections, election management dashboard" />
+            </Helmet>
             <div className='space-y-5 flex flex-col items-center bg-[#1E293B] shadow-xl p-6 rounded-xl sm:w-[500px] w-[90%]'>
                 <h2 className='text-white text-3xl text-center'>Admin Login</h2>
                 <div className='bg-[#5478FF] p-5  flex items-center justify-center rounded-full'>
