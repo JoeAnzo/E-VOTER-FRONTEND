@@ -104,8 +104,8 @@ function Students() {
                 <SideBar/>
             </div>
             <div className="sm:w-[80%] w-full overflow-scroll hide-scrollbar">
-                <div className="flex justify-between mt-4 fixed z-30">
-                    <h2 className="text-white text-2xl mr-2">Manage Students here</h2>
+                <div className="flex justify-between mt-4 fixed z-20">
+                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl mr-2 ml-2 sm:ml-0">Manage Students here</h2>
                     <div className="gap-4 flex pr-4">
                         <div className="flex items-center gap-2">
                             <div onClick={handleClassClick} className="text-white flex gap-4 hover:cursor-pointer bg-[#5478FF] p-2 rounded-md relative">

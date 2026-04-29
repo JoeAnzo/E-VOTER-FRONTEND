@@ -11,15 +11,15 @@ function UserProfile({studentInfo}) {
    className='flex justify-between bg-white items-center dark:bg-[#1E293B] dark:text-white shadow-xl pl-2 py-4'>
          <div className='flex items-center justify-center gap-2'>
             <Logo/>
-            <h1 className='text-2xl text-slate-900 dark:text-white'>Evoter</h1>
+            <h1 className='sm:text-2xl text-xl text-slate-900 dark:text-white'>Evoter</h1>
          </div>
-         <div className='flex gap-1 items-center dark:text-white text-slate-900'>
+         <div className='flex gap-1 justify-center items-center dark:text-white text-slate-900 ml-4'>
             <User size={30}/> 
-            <h2 className='mr-2'>
+            <h2 className='text-center'>
                {studentInfo.name}<br/>
                {studentInfo.class} {studentInfo.stream}
             </h2>
-            <div className='mr-2'>
+            <div className='mr-1'>
                <ThemeIcon/>
             </div>
          </div>

@@ -72,7 +72,7 @@ function VotingHall(){
         setProgressBar(percentage)
     },[nextPost])
 
-    function handleNextPost(){
+    async function handleNextPost(){
         // Check if user has voted for current post
         const currentPost = posts[nextPost]
 
@@ -107,9 +107,6 @@ function VotingHall(){
             
             if (hasVotedForALevel && hasVotedForOLevel){
                 canProceed = true
-                setVotedForCandidates((prev) => {
-                    return [...prev,...votedForCandidatesCurrentPost]
-                })
             } else if(!hasVotedForALevel) {
                 errorMessage = `Please vote for a ${currentPost} A-Level before proceeding.`
             } else {
@@ -119,9 +116,6 @@ function VotingHall(){
             // For posts with only one level or none, require at least one vote
             if (hasVotedForCurrentPost) {
                 canProceed = true
-                setVotedForCandidates((prev) => {
-                    return [...prev,...votedForCandidatesCurrentPost]
-                })
             } else {
                 errorMessage = `Please vote for a ${currentPost} before proceeding.`
             }
@@ -137,20 +131,21 @@ function VotingHall(){
             return
         }
 
-        
+        const updatedVotedForCandidates = [...votedForCandidates, ...votedForCandidatesCurrentPost]
+        setVotedForCandidates(updatedVotedForCandidates)
+
         setIsClicked(null)
-        setNextPost((prev) => prev + 1)
         setNortification(prev => ({...prev, displayMessage: false, displayError: false}))
 
-        async function submitVotedForCandidates(){
-            const submitedVotes = await submitVotes(votedForCandidates,OTP)
-            console.log(submitedVotes)
-        }
         if (nextPost === posts.length - 1){
-            setNextPost(posts.length - 1)
+            const submittedVotes = await submitVotes(updatedVotedForCandidates, OTP)
+            console.log(submittedVotes)
+            setVotedForCandidatesCurrentPost([])
             navigate('/student/submit-vote')
+            return
         }
-        submitVotedForCandidates()
+
+        setNextPost((prev) => prev + 1)
         setVotedForCandidatesCurrentPost([])
     }
     return(

@@ -16,7 +16,7 @@ function ResultsBarChartPerPost({post}) {
 
   return (
     <>
-    <h2 className='text-2xl dark:text-white text-slate-900'>{post} <span className='bg-green-500 px-2 text-slate-900 dark:text-white rounded-md my-8'>Live</span></h2>
+    <h2 className='text-2xl ml-2 sm:ml-0 dark:text-white text-slate-900'>{post} <span className='bg-green-500 px-2 text-slate-900 dark:text-white rounded-md my-8'>Live</span></h2>
     <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} fill="green">
             <CartesianGrid strokeDasharray="3 3"/>

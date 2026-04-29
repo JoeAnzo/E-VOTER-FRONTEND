@@ -36,7 +36,7 @@ function Staff() {
             </div>
             <div className="sm:w-[80%] w-full overflow-scroll hide-scrollbar">
                 <div className="flex justify-between mt-4">
-                    <h2 className="text-white text-2xl">Mange Staff/Teachers here</h2>
+                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl">Mange Staff/Teachers here</h2>
                     <div className="gap-4 flex pr-4">
                         <button className="text-white px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]">Add a Staff Member /Teacher</button>
                         <button className="text-white px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]">Upload List</button>

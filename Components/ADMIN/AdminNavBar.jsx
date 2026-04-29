@@ -9,12 +9,12 @@ function AdminNavBar() {
         setToggleIcon((prev) => !prev)
     }
   return (
-    <header className="h-[10%] flex justify-between items-center bg-white dark:bg-[#1E293B] shadow-xl pl-8 py-4">
+    <header className="h-[10%] flex justify-between items-center bg-white dark:bg-[#1E293B] shadow-xl pl-4 py-4">
         <div className="flex flex-col">
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-2 items-center">
                 <div onClick={handleClick}>
                     {
-                        toggleIcon ? <MenuIcon color="white" className="sm:hidden"/> : <XIcon className="sm:hidden" color="white"/>
+                        toggleIcon ? <MenuIcon className="sm:hidden dark:text-white text-slate-900"/> : <XIcon className="sm:hidden dark:text-white text-slate-900"/>
                     }
                 </div>
                 <Logo/>
@@ -27,7 +27,7 @@ function AdminNavBar() {
         <div className="flex gap-4">
             <Settings color="white" className="hover:cursor-pointer hidden sm:visible"/>
             <h2 className="dark:text-white text-slate-900">Admin</h2>
-            <div className="mr-4">
+            <div className="mr-2">
                 <ThemeIcon/>
             </div>
         </div>

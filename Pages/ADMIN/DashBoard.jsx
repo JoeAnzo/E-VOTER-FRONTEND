@@ -36,23 +36,23 @@ function DashBoard() {
                 <SideBar/>
             </div>
             <div className="sm:w-[80%] w-full overflow-scroll hide-scrollbar">
-                <h2 className="dark:text-white text-slate-900 text-2xl ml-4 mt-8">Welcome Admin</h2>
-                <h2 className="dark:text-white text-slate-900 text-2xl ml-4 mb-8">Dash Board</h2>
+                <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl ml-4 mt-8">Welcome Admin</h2>
+                <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl ml-4 mb-8">DashBoard</h2>
                 <div className="flex sm:flex-row flex-col gap-4 px-4 mt-4">
                    <AnalysisCard heading="Students" icon={<GraduationCap className="text-white" size={40}/>} numberDisplay={totalNumberOfStudents} />
                    <AnalysisCard heading="Staff/Teachers" icon={<Users className="text-white" size={40}/>} numberDisplay={1000} /> 
                    <AnalysisCard heading="Candidates" icon={<User className="text-white" size={40}/>} numberDisplay={totalNumberOfCandidates} /> 
                 </div>
                 <div>
-                    <h2 className="dark:text-white text-slate-900 text-2xl ml-4 my-8">Students Entrolled</h2>
+                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl ml-4 my-8">Students Entrolled</h2>
                     <SchoolAnalysisLineGraph/>
                 </div>
                 <div>
-                    <h2 className="dark:text-white text-slate-900 text-2xl ml-4 my-8">Candidates or Prefects Entrolled</h2>
+                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl ml-4 my-8">Candidates or Prefects Entrolled</h2>
                     <PrefectsPieChart/>
                 </div>
                 <div>
-                    <h2 className="dark:text-white text-slate-900 text-2xl ml-4 my-8">Staff Members Entrolled</h2>
+                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl ml-4 my-8">Staff Members Entrolled</h2>
                     <StaffAnalysisLineGraph/>
                 </div>
             </div>

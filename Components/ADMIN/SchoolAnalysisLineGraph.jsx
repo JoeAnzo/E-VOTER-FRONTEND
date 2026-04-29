@@ -29,8 +29,8 @@ function SchoolAnalysisLineGraph() {
     <ResponsiveContainer width="100%" height={500}>
         <BarChart data={barGraphData}>
             <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="Class" tick={{fill:"#ffffff"}}/>
-            <YAxis tick={{fill:"#ffffff"}}/>
+            <XAxis dataKey="Class" className="fill-slate-900 dark:fill-white"/>
+            <YAxis className="fill-slate-900 dark:fill-white"/>
             <Tooltip/>
             <Legend formatter={(value) => <span style={{color:'white'}}>{value}</span>}/>
             {

@@ -46,9 +46,11 @@ function PrefectCard({candidate,isClicked,setIsClicked,id,setNortification,index
         }])
     }
 
-    const hasAlreadyVotedForThisCandidate = votedForCandidatesCurrentPost.some((votedCandidate)=>{
-            return votedCandidate === candidate
-        })
+    const hasAlreadyVotedForThisCandidate = votedForCandidatesCurrentPost.some((votedCandidate) => {
+        return votedCandidate.Candidate_Name === candidate.Candidate_Name &&
+               votedCandidate.prefectorial_Post === candidate.prefectorial_Post &&
+               votedCandidate.education_Level === candidate.education_Level
+    })
 
     let checked = isClicked || hasAlreadyVotedForThisCandidate
 

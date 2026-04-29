@@ -33,7 +33,7 @@ function ElectionProgress() {
             </div>
             <div className="sm:w-[80%] w-full overflow-scroll hide-scrollbar">
                 <div className="flex justify-between mt-4">
-                    <h2 className="dark:text-white text-slate-900 text-2xl my-4">View the elections live here</h2>
+                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl my-4">View the elections live here</h2>
                 </div>
                  <div className="dark:text-white text-slate-900">
                         {
