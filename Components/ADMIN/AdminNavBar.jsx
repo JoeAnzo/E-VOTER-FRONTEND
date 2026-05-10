@@ -11,7 +11,7 @@ function AdminNavBar() {
   return (
     <header className="h-[10%] flex justify-between items-center bg-white dark:bg-[#1E293B] shadow-xl pl-4 py-4">
         <div className="flex flex-col">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center sm:p-4">
                 <div onClick={handleClick}>
                     {
                         toggleIcon ? <MenuIcon className="sm:hidden dark:text-white text-slate-900"/> : <XIcon className="sm:hidden dark:text-white text-slate-900"/>

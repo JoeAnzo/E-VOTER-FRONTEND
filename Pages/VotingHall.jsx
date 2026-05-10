@@ -12,7 +12,7 @@ import {Helmet} from 'react-helmet'
 function VotingHall(){
     const scrollContainerRef = useRef(null)
 
-    const {votedForCandidates,setVotedForCandidates,OTP} = useContext(userContext)
+    const {votedForCandidates,setIsAuth,setVotedForCandidates,OTP} = useContext(userContext)
 
     const [posts,setPosts] = useState([])
     const [candidates,setCandidates] = useState([])
@@ -141,6 +141,7 @@ function VotingHall(){
             const submittedVotes = await submitVotes(updatedVotedForCandidates, OTP)
             console.log(submittedVotes)
             setVotedForCandidatesCurrentPost([])
+            setVotedForCandidates([])
             navigate('/student/submit-vote')
             return
         }

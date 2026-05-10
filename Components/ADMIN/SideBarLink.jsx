@@ -1,7 +1,14 @@
-import {Link} from "react-router-dom"
-function SideBarLink(path,icon,textDisplay){
+import {NavLink} from "react-router-dom"
+import { useContext } from "react"
+import { userContext } from "../../Contexts/userContext"
+function SideBarLink({ path, icon, textDisplay,index,setClicked,isClicked}){
+    const {toggleIcon,setToggleIcon} = useContext(userContext)
+    function handleClick(){
+        setToggleIcon(true)
+    }
     return(
-        <Link to={path} className="flex gap-2 p-4 rounded-md hover:bg-[#5478FF]">{icon}{textDisplay}</Link>
+        <NavLink onClick={handleClick} to={path} className={({ isActive }) =>
+        `flex gap-2 p-4 rounded-md ${isActive ? "bg-[#5478FF] text-white" : "hover:bg-[#5478FF] hover:text-white"}`}>{icon}{textDisplay}</NavLink>
     )
 }
 

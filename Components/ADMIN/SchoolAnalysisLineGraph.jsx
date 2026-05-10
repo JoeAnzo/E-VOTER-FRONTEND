@@ -14,8 +14,9 @@ function SchoolAnalysisLineGraph() {
     useEffect(()=>{
         fetchStudentsData()
     },[])
-
+    console.log(barGraphData)
     const allKeys = barGraphData.reduce((acc,items)=>{
+            console.log(items)
             Object.keys(items).forEach(key => {
                 if (key !== 'Class' && !acc.includes(key)) {
                     acc.push(key)
@@ -35,7 +36,7 @@ function SchoolAnalysisLineGraph() {
             <Legend formatter={(value) => <span style={{color:'white'}}>{value}</span>}/>
             {
                 allKeys.map((streamName,Index)=>{
-                   return <Bar key={streamName} dataKey={streamName} fill={Index % 2 === 0 ? '#8884d8':'#5478FF'}/>
+                   return <Bar  dataKey={streamName} fill={Index % 2 === 0 ? '#8884d8':'#5478FF'}/>
 
                 })
             } 

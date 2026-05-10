@@ -16,6 +16,20 @@ async function searchStudent(name) {
   }
 }
 
+async function searchCandidate(name) {
+  try {
+    const response = await fetch(`${base_url}/v1/api/Candidates/search?name=${name}`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    return { success: true, data }
+  } catch (error) {
+    console.log(error.message)
+    return { success: false, error: error.message }
+  }
+}
+
 async function fetchStudent(name, Class, Stream) {
   try {
     const response = await fetch(`${base_url}/v1/api/Students/One?Name=${name}&Class=${Class}&Stream=${Stream}`)
@@ -197,4 +211,104 @@ async function fetchResultsPerPost(post) {
   }
 }
 
-export {submitVotes,fetchStaffMembers,fetchResultsPerPost,searchStudent, fetchStudent, fetchPrefectPosts, fetchCandidatesPerPost, getAdminUser,fetchStudents,fetchPrefects,fetchStudentsPerClass }
+async function uploadFile(formData){
+  try {
+    const response = await fetch(`${base_url}/v1/api/admin/students/upload`, {
+      method: 'POST',
+      body: formData
+    })
+
+    const contentType = response.headers.get('content-type') || ''
+    let result
+
+    if (contentType.includes('application/json')) {
+      result = await response.json()
+    } else {
+      const text = await response.text()
+      result = { success: response.ok, message: text }
+    }
+
+    if (!response.ok) {
+      throw new Error(result.error || result.message || `Upload failed (${response.status})`)
+    }
+
+    return result
+  } catch (error) {
+    console.error('Error uploading file', error)
+    return { success: false, error: error.message }
+  }
+}
+
+async function generateOTPsForStudents(){
+  try{
+    const response = await fetch(`${base_url}/v1/api/admin/generateOTPs/Students`,{
+      method:'POST'
+    })
+    if (response.ok){
+      const data = await response.json()
+      return {
+        success:true,
+        data:data
+      }
+    } else {
+      return {
+        success:false,
+        message:'Error generating OTPs'
+      }
+    }
+  } catch(err){
+    return {
+      success:false,
+      message:err.message
+    }
+  }
+}
+
+async function generateOTPsForStaff(){
+  try{
+    const response = await fetch(`${base_url}/v1/api/admin/generateOTPs/Staff`,{
+      method:'POST'
+    })
+    if (response.ok){
+      const data = await response.json()
+      return {
+        success:true,
+        data:data
+      }
+    } else {
+      return {
+        success:false,
+        message:'Error generating OTPs'
+      }
+    }
+  } catch(err){
+    return {
+      success:false,
+      message:err.message
+    }
+  }
+}
+
+async function exportStudentList(){
+  try{
+    const response = await fetch(`${base_url}/v1/api/admin/Students/export-csv`)
+    if (response.ok){
+     return {
+      success:true,
+      message:'Exported list successfully'
+     }
+    } else {
+      return {
+        success:false,
+        message:'Error exporting students List'
+      }
+    }
+  } catch(err){
+    return {
+      success:false,
+      message:err.message
+    }
+  }
+}
+
+export {submitVotes,searchCandidate,exportStudentList,generateOTPsForStaff,generateOTPsForStudents,uploadFile,fetchStaffMembers,fetchResultsPerPost,searchStudent, fetchStudent, fetchPrefectPosts, fetchCandidatesPerPost, getAdminUser,fetchStudents,fetchPrefects,fetchStudentsPerClass }

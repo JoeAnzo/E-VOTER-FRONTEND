@@ -4,6 +4,7 @@ import SideBar from "../../Components/ADMIN/SideBar"
 import ResultsBarChartPerPost from "../../Components/ResultsBarChartPerPost.jsx"
 import {Helmet} from 'react-helmet'
 import { useState,useEffect } from "react"
+import SchoolVotingProgress from "../../Components/ADMIN/SchoolVotingProgress.jsx"
 function ElectionProgress() {
     const [posts,setPosts] = useState([])
     async function getPosts(){
@@ -33,7 +34,7 @@ function ElectionProgress() {
             </div>
             <div className="sm:w-[80%] w-full overflow-scroll hide-scrollbar">
                 <div className="flex justify-between mt-4">
-                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl my-4">View the elections live here</h2>
+                    <h2 className="dark:text-white text-slate-900 text-xl sm:text-2xl ml-2 my-4">View the elections live here</h2>
                 </div>
                  <div className="dark:text-white text-slate-900">
                         {
@@ -41,6 +42,10 @@ function ElectionProgress() {
                                 return <ResultsBarChartPerPost key={index} post={post}/>
                             })
                         }
+                </div>
+                <div>
+                    <h2 className="dark:text-white text-slate-900 text-xl sm:text-2xl ml-2 my-4">View the School voting progress live here</h2>
+                    <SchoolVotingProgress/>
                 </div>
             </div>
         </div>

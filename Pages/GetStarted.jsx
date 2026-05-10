@@ -47,14 +47,14 @@ function handleClick(){
                   </div>
                </div>
            </div>
-           <div className='text-center bottom-0 mt-4 dark:text-white text-slate-900'>
+           <div className='text-center bottom-0 mt-2 dark:text-white text-slate-900'>
                 <div className='flex gap-2 pl-2'>
-                    <Link className='underline'  to='/about'>About us</Link>
-                    <Link className='underline'  to='/Contact-Us'>Contact us</Link>
-                    <Link className='underline'  to='/terms'>Terms and conditions</Link>
-                    <Link className='underline'  to='/privacy'>Privacy Policy</Link>
+                    <Link className='underline'  to='/about-us'>About us</Link>
+                    <Link className='underline'  to='/contact-us'>Contact us</Link>
+                    <Link className='underline'  to='/terms-and-conditions'>Terms and conditions</Link>
+                    <Link className='underline'  to='/privacy-policy'>Privacy Policy</Link>
                 </div>
-                <p className='mt-20'>©{currentYear} E-voter School Elections Made Simple</p>
+                <p className='mt-10'>©{currentYear} E-voter School Elections Made Simple</p>
             </div>
        </div>
     </>

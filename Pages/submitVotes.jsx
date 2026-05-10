@@ -6,10 +6,10 @@ import { userContext } from '../Contexts/userContext'
 
 function SubmitVotes(){
     const navigate = useNavigate()
-    const {votedForCandidates,setVotedForCandidates} = useContext(userContext)
-    console.log(votedForCandidates)
+    const {setIsAuth} = useContext(userContext)
     function handleClick(){
         navigate('/')
+        setIsAuth(false)
     }
     return(
         <div className="flex flex-col h-screen dark:bg-[#0F172A] justify-center items-center text-slate-900 dark:text-white space-y-4">

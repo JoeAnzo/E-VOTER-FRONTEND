@@ -13,9 +13,9 @@ function ThemeIcon() {
           document.documentElement.classList.remove('dark')
         }
       } else {
-        localStorage.setItem('Theme', 'light')
-        setTheme('light')
-        document.documentElement.classList.remove('dark')
+        localStorage.setItem('Theme', 'dark')
+        setTheme('dark')
+        document.documentElement.classList.add('dark') 
       }
     }, [])
     

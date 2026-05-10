@@ -15,7 +15,7 @@ function FeatureCard({textHeading,textParagraph,icon,index = 0}) {
             transform: isVisible ? 'translateX(0)' : 'translateX(-5rem)',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 500ms ease-out, transform 500ms ease-out',
-            transitionDelay: `${delay}ms`,
+            transitionDelay:`${delay}ms`,
             willChange: 'opacity, transform'
           }}
         >
