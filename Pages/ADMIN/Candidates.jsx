@@ -56,9 +56,25 @@ function Candidates() {
             <div className="sm:w-[20%]">
                 <SideBar/>
             </div>
-            <div className="sm:w-[80%] h-full w-full overflow-scroll hide-scrollbar">
+            <div className="sm:w-[80%] relative h-full w-full overflow-scroll hide-scrollbar">
+            <div className=" absolute top-0 left-0 bottom-0 right-0 z-60 flex justify-center items-center">
+                <div className="flex flex-col items-center pt-4">
+                    <h2>ADD A CANDIDATE</h2>
+                    <label>Candidate's Name</label>
+                    <input type="text" className="p-2 text-left bg-white rounded-md"/>
+                    <label>Class</label>
+                    <input type="text" placeholder="Class" className="p-2 bg-white rounded-md"/>
+                    <label>Education Level</label>
+                    <input id="level" className="bg-white p-2" type="text" placeholder="Class"/>
+                    <label>Prefectorial Post</label>
+                    <input id="level" className="bg-white p-2" type="text" placeholder="eg Head boy"/>
+                    <label htmlFor="file">Choose a Photo</label>
+                    <input id="file" className="hidden" type="file" />
+                    <button>ADD</button>
+                </div>
+            </div>
                 <div className="flex justify-between mt-4 flex-col sm:flex-row gap-4">
-                    <h2 className="text-white text-center text-2xl">Manage Candidates here</h2>
+                    <h2 className="dark:text-white text-slate-900 text-center text-2xl">Manage Candidates here</h2>
                     <div className="gap-4 flex pr-4">
                         <div className="flex flex-col gap-4 w-full sm:flex-row items-center justify-center gap-2">
                                 <div className="relative flex gap-4 items-center">

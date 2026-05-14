@@ -111,7 +111,7 @@ async function handleSubmit(e){
 
 
   return (
-      <div className='flex items-center justify-center flex-col bg-white dark:bg-[#0F172A] shadow-2xl'>
+      <div className='flex items-center justify-center flex-col  shadow-2xl'>
         <Helmet>
             <title>Student Login</title>
             <meta name="description" content="Login to E-voter as a student and participate in your school's democratic process. Our secure and easy-to-use platform allows you to vote for your school leaders with confidence. Enter your details, including your name, class, stream, and OTP code, to access the voting hall and make your voice heard in shaping the future of your school." />

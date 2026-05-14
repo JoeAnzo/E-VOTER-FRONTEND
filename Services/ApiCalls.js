@@ -30,6 +30,20 @@ async function searchCandidate(name) {
   }
 }
 
+async function searchStaff(name) {
+  try {
+    const response = await fetch(`${base_url}/v1/api/Staff/search?q=${name}`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    return { success: true, data }
+  } catch (error) {
+    console.log(error.message)
+    return { success: false, error: error.message }
+  }
+}
+
 async function fetchStudent(name, Class, Stream) {
   try {
     const response = await fetch(`${base_url}/v1/api/Students/One?Name=${name}&Class=${Class}&Stream=${Stream}`)
@@ -311,4 +325,37 @@ async function exportStudentList(){
   }
 }
 
-export {submitVotes,searchCandidate,exportStudentList,generateOTPsForStaff,generateOTPsForStudents,uploadFile,fetchStaffMembers,fetchResultsPerPost,searchStudent, fetchStudent, fetchPrefectPosts, fetchCandidatesPerPost, getAdminUser,fetchStudents,fetchPrefects,fetchStudentsPerClass }
+async function contactUsForm(name,subject,message){
+  try{
+    const response = await fetch(`${base_url}/v1/api/contact-us`,{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+        Name:name,
+        Subject:subject,
+        Message:message
+      })
+    })
+    if (response.ok){
+      const data = await response.json()
+      return {
+        success:true,
+        data:data
+      }
+    } else {
+      return {
+        success:false,
+        message:"Something went wrong"
+      }
+    }
+  } catch(error) {
+    return {
+      success:false,
+      message:error.message
+    }
+  }
+}
+
+export {submitVotes,searchStaff,contactUsForm,searchCandidate,exportStudentList,generateOTPsForStaff,generateOTPsForStudents,uploadFile,fetchStaffMembers,fetchResultsPerPost,searchStudent, fetchStudent, fetchPrefectPosts, fetchCandidatesPerPost, getAdminUser,fetchStudents,fetchPrefects,fetchStudentsPerClass }

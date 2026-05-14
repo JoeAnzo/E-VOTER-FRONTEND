@@ -109,7 +109,7 @@ function AdminLogin(){
             <div className='space-y-5 flex flex-col items-center dark:bg-[#1E293B] bg-[F9FAFB] shadow-xl p-6 rounded-xl sm:w-125 w-[90%] relative'>
                 <h2 className='text-white text-3xl text-center'>Admin Login</h2>
                 <div className='bg-[#5478FF] p-5  flex items-center justify-center rounded-full'>
-                    <div className='absolute top-10 right-10'>
+                    <div className='absolute top-8 right-8'>
                         <ThemeIcon/>
                     </div>
                     <User color='white' size={60}/>

@@ -9,6 +9,7 @@ import { searchStudent } from "../../Services/ApiCalls.js"
 import ClassListDropDown from "../../Components/ADMIN/ClassListDropDown.jsx"
 import StreamListDropDown from "../../Components/ADMIN/StreamListDropDown.jsx"
 import {Helmet} from 'react-helmet'
+
 function Students() {
     const [loading,setLoading] = useState(false)
     const [studentSearch,setStudentSearch] = useState('')
@@ -116,7 +117,15 @@ function Students() {
         const formData = new FormData()
         formData.append('excelFile',file)
         const response = await uploadFile(formData)
-        console.log(response)
+        if (response.success){
+            setNortification({
+                show:true,
+                message:`${response.message}`
+            })
+
+            setFile(null)
+            getStudents()
+        }
     }
     async function handleStudentsExport(){
         const backend_url = import.meta.env.VITE_BACKEND_URL
@@ -125,6 +134,7 @@ function Students() {
     async function handleGenerateOTPs() {
         const Otps = await generateOTPsForStudents()
         if (Otps.success){
+            getStudents()
             setHighLightOtps(true)
             setNortification({
                 show:true,
@@ -155,13 +165,13 @@ function Students() {
         <AdminNavBar/>
         <div className="h-[90%] flex"> 
             <div className="sm:w-[20%]">
-                <SideBar/>
+                <SideBar handleGenerateOTPs={handleGenerateOTPs} handleFileChange={handleFileChange} handleFileUpload={handleFileUpload} handleStudentsExport={handleStudentsExport}/>
             </div>
             <div className="sm:w-[80%] w-full relative overflow-scroll hide-scrollbar">
-                <div className="flex flex-col sm:flex-row justify-between mt-4  w-full">
-                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl mr-2 ml-2 sm:ml-0">Manage Students here</h2>
+                <div className="flex flex-col sm:flex-row items-center justify-between mt-4  w-full">
+                    <h2 className="dark:text-white text-slate-900 text-2xl sm:text-2xl mr-2 my-4 sm:ml-2 sm:ml-0">Manage Students here</h2>
                     <div className="gap-4 flex flex-col sm:flex-row pr-4">
-                        <div className="flex flex-col sm:flex-row items-center gap-2">
+                        <div className="flex flex-col ml-2 sm:flex-row gap-2">
                             <div className="flex gap-4">
                                 <div onClick={handleClassClick} className="text-white flex gap-4 hover:cursor-pointer bg-[#5478FF] p-2 rounded-md relative">
                                     {selectedClass !== '' ? selectedClass : 'Class'}<ChevronDown/>
@@ -176,17 +186,10 @@ function Students() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex gap-2 items-center justify-  order-first">
-                                <input type="text" value={studentSearch} onChange= {(e) => {setStudentSearch(e.target.value)}} className="bg-white p-2 rounded-md" placeholder="Search Student here"/>
+                            <div className="flex gap-2 items-center order-first">
+                                <input type="text" value={studentSearch} onChange= {(e) => {setStudentSearch(e.target.value)}} className="bg-white p-2 rounded-md border-1 border-[#5478FF]" placeholder="Search Student here"/>
                                 <SearchIcon onClick={handleStudentSearch} className="hover:cursor-pointer text-slate-900 dark:text-white"/>
                             </div>
-                        </div>
-                        <div className="flex gap-2">
-                            <label className="hidden text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] sm:flex items-center" htmlFor="fileUpload"><FileIcon color="white"/></label>
-                            <input type="file" id="fileUpload" accept=".xlsx, .xls" onChange={handleFileChange} className="hidden" />
-                            <button onClick={handleFileUpload} className="text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] sm:flex items-center">upload</button>
-                            <button onClick={handleStudentsExport} className="text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] sm:flex items-center">Export List</button>
-                            <button onClick={handleGenerateOTPs} className="text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] sm:flex items-center">Generate OTPs</button>
                         </div>
                         </div>
                         

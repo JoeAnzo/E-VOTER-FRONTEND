@@ -1,28 +1,47 @@
 import {User}  from 'lucide-react'
 import ThemeIcon from '../Components/ThemeIcon'
+import {useState} from 'react'
 function StaffLogin(){
+    const [hasReceivedOTP,setHasReceivedOTP] = useState(true)
+    const [staffName,setStaffName] = useState('')
+    const [OTP,setOTP] = useState(0)
+    const [digits,setDigits] = useState(0)
+
     return(
         <div className="h-screen flex items-center justify-center">
             <div className='space-y-5 flex flex-col items-center dark:bg-[#1E293B] bg-[F9FAFB] shadow-xl p-6 rounded-xl sm:w-125 relative w-[90%]'>
                 <div className='absolute top-10 right-10'>
                     <ThemeIcon/>
                 </div>
-                <h2 className='text-white text-3xl text-center'>Staff Login</h2>
+                <h2 className='dark:text-white text-slate-900 text-3xl text-center'>Staff Login</h2>
                 <div className='bg-[#5478FF] p-5  flex items-center justify-center rounded-full'>
                     <User color='white' size={60}/>
                 </div>
                 <div className='flex flex-col space-y-5 w-full'>
                     <h2 className='dark:text-white text-slate-900'>
-                        Staff Name
+                        Staff User Name
                     </h2>
-                    <input className='bg-gray-100 py-2.5 pl-2 rounded-xl w-full' type="text" placeholder='Name' />
-                    <h2 className='dark:text-white text-slate-900'>
-                        Enter your OTP
-                    </h2>
-                    <input className='bg-gray-100 py-2.5 pl-2 rounded-xl w-full' type="password" placeholder='Enter your OTP' />
+                    <input className='bg-gray-100 py-2.5 pl-2 rounded-xl w-full' type="text" placeholder='Name'value={staffName} onChange={(e) => setStaffName(e.target.value)}/>
+                    <div>
+                        {
+                        hasReceivedOTP ?
+                        <div>
+                            <label className='dark:text-white text-slate-900'>
+                                Enter your OTP
+                            </label>
+                            <input className='bg-gray-100 py-2.5 pl-2 rounded-xl w-full' type="number" placeholder='Enter your OTP' value={OTP} onChange={(e) => setOTP(e.target.value)}/>
+                        </div> :
+                        <div>
+                            <label className='dark:text-white text-slate-900'>
+                                Enter your Telephone Number
+                            </label>
+                            <input className='bg-gray-100 py-2.5 pl-2 rounded-xl w-full' type="number" placeholder='eg +256778714390' value={digits} onChange={(e) => setDigits(e.target.value)}/>
+                        </div>
+                        }
+                    </div>
                 </div>
                 <button className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer hover:opacity-80'>
-                    Login
+                    {hasReceivedOTP ? 'Login' : 'Request OTP'}
                 </button>
             </div>
         </div>

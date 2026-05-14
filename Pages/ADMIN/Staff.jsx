@@ -32,9 +32,10 @@ function Staff() {
         getData()
     },[])
     console.log(staffList)
-    async function handleGenerateOTPs() {
+    async function handleGenerateStaffOTPs() {
         const Otps = await generateOTPsForStaff()
         if (Otps.success){
+            getData()
             setHighLightOtps(true)
             setNortification({
                 show:true,
@@ -42,7 +43,7 @@ function Staff() {
             })
         }
     }
-    function handleFileChange(e){
+    function handleStaffFileChange(e){
         setFile(e.target.files[0])
     }
     function handleCloseErrorMsg(){
@@ -58,7 +59,7 @@ function Staff() {
             return {prev,show:false}
         })
     }
-    async function handleFileUpload(){
+    async function handleStaffFileUpload(){
         if (!file){
             setError((prev) => {
                 return {
@@ -84,18 +85,13 @@ function Staff() {
         <AdminNavBar/>
         <div className="h-[90%] flex"> 
             <div className="sm:w-[20%]">
-                <SideBar/>
+                <SideBar handleGenerateStaffOTPs={handleGenerateStaffOTPs} handleStaffFileUpload={handleStaffFileUpload} handleStaffExport={handleStaffExport} handleStaffFileChange={handleStaffFileChange}/>
             </div>
             <div className="sm:w-[80%] w-full overflow-scroll hide-scrollbar">
-                <div className="flex justify-between mt-4">
-                    <h2 className="dark:text-white text-slate-900 text-lg sm:text-2xl">Mange Staff/Teachers here</h2>
+                <div className="flex  justify-between items-center  pl-4">
+                    <h2 className="dark:text-white text-slate-900 my-4 text-2xl sm:text-2xl">Manage Staff/Teachers here</h2>
                     <div className="gap-4 flex pr-4">
                         <button className="text-white px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]">Add a Staff Member /Teacher</button>
-                        <label className="hidden text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] sm:flex items-center" htmlFor="fileUpload"><FileIcon color="white"/></label>
-                        <input type="file" id="fileUpload" accept=".xlsx, .xls" onChange={handleFileChange} className="hidden" />
-                        <button onClick={handleFileUpload} className="text-white px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]">Upload</button>
-                        <button onClick={handleStaffExport} className="text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] flex items-center">Export List</button>
-                        <button onClick={handleGenerateOTPs} className="text-white px-2 rounded-lg hover:cursor-pointer bg-[#5478FF] flex items-center">Generate OTPs</button>
                     </div>
                 </div>
                 <div className="text-center fixed z-30 mx-auto right-0 left-0 sm:left-60  p-4">

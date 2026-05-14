@@ -1,5 +1,5 @@
 import {CheckCircle,ArrowLeft, ArrowRight} from 'lucide-react'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 import { userContext } from '../Contexts/userContext'
@@ -8,9 +8,25 @@ function SubmitVotes(){
     const navigate = useNavigate()
     const {setIsAuth} = useContext(userContext)
     function handleClick(){
-        navigate('/')
         setIsAuth(false)
+        navigate('/')
     }
+    useEffect(() => {
+        window.history.pushState({target:'trap'},'',window.location.href)
+        const handlePopState = (event) => {
+            if (!event.state || event.state.target !== 'trap'){
+                navigate('/')
+                setIsAuth(false)
+                window.history.pushState({ target:'trap'},'',window.location.href)
+            }
+        }
+
+        window.addEventListener('popstate',handlePopState)
+
+        return () => {
+            window.removeEventListener('popstate',handlePopState)
+        }
+    },[])
     return(
         <div className="flex flex-col h-screen dark:bg-[#0F172A] justify-center items-center text-slate-900 dark:text-white space-y-4">
             <Helmet>

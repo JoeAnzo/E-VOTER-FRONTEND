@@ -18,6 +18,7 @@ import About from "../Pages/About"
 import Policy from "../Pages/Policy"
 import Terms from "../Pages/Terms"
 import ContactUs from "../Pages/ContactUs"
+import ScrollToTop from "../Components/ScrollToTop"
 function App() {
   const [name,setName] = useState('')
   const [stream,setStream] = useState('')
@@ -25,10 +26,11 @@ function App() {
   const [OTP,setOTP] = useState(null)
   const [isAuth,setIsAuth] = useState(false)
   const [votedForCandidates,setVotedForCandidates] = useState([])
-  const [toggleIcon,setToggleIcon] = useState(false)
+  const [toggleIcon,setToggleIcon] = useState(true)
 
   return (
     <> 
+        <ScrollToTop/>
         <userContext.Provider value={{name,setName,stream,setStream,grade,setGrade,OTP,setOTP,votedForCandidates,setVotedForCandidates,isAuth,setIsAuth,toggleIcon,setToggleIcon}}>
             <Routes>
               <Route path="/" element={<GetStarted/>}/>
@@ -41,8 +43,8 @@ function App() {
               <Route path="/auth/login/Staff" element={<StaffLogin/>}/>
               <Route element={<ProtectedRoutes/>}>
                   <Route path="/student/voting-hall" element={<VotingHall/>}/>
-                  <Route path="/student/submit-vote" element={<SubmitVotes/>}/>
               </Route>
+              <Route path="/student/submit-vote" element={<SubmitVotes/>}/>
               <Route path="/admin/dashboard" element={<DashBoard/>}/>
               <Route path="/admin/students" element={<Students/>}/>
               <Route path="/admin/candidates" element={<Candidates/>}/>
