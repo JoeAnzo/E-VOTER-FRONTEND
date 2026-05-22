@@ -31,7 +31,7 @@ function ThemeIcon() {
     }
     
   return (
-    <div className='dark:text-white text-slate-900 hover:cursor-pointer' onClick={handleClick}>
+    <div className='dark:text-white rounded-md border-1 p-2 border-gray-400 text-slate-900 hover:cursor-pointer' onClick={handleClick}>
         {
             theme === 'dark' ? <MoonIcon/> : <SunIcon/>
         }
