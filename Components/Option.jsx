@@ -11,7 +11,7 @@ function Option({text,id,isClicked,setClicked}){
         setGrade(input)
     }
     return(
-        <h1 onClick={() => handleClick(text)} className={`py-2.5 rounded-xl hover:bg-[#101540] hover:text-white ${isClicked ? 'text-white':'text-white'} flex gap-2  pl-4 ${isClicked ? 'bg-[#101540] rounded-xl' : ''}`}>
+        <h1 onClick={() => handleClick(text)} className={`py-2 rounded-xl hover:bg-[#5478FF] hover:text-white ${isClicked ? 'text-white':'text-white'} flex gap-2  pl-4 ${isClicked ? 'bg-[#5478FF] rounded-xl' : ''}`}>
             {isClicked ? <CheckIcon color="white"/>:''}{text}
         </h1>
     )

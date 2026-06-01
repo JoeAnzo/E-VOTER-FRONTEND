@@ -2,7 +2,7 @@ import {User}  from 'lucide-react'
 import ThemeIcon from '../Components/ThemeIcon'
 import {useState} from 'react'
 function StaffLogin(){
-    const [hasReceivedOTP,setHasReceivedOTP] = useState(true)
+    const [hasReceivedOTP,setHasReceivedOTP] = useState(false)
     const [staffName,setStaffName] = useState('')
     const [OTP,setOTP] = useState(0)
     const [digits,setDigits] = useState(0)

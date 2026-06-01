@@ -1,9 +1,9 @@
 import { userContext } from '../Contexts/userContext.js'
-import { useContext, useState } from 'react'
+import { useContext, useState,useEffect,useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {User}  from 'lucide-react'
 import { getAdminUser } from '../Services/ApiCalls.js'
-import {EyeIcon,EyeClosed} from 'lucide-react'
+import {EyeIcon,EyeClosed,CircleAlert} from 'lucide-react'
 import ThemeIcon from '../Components/ThemeIcon.jsx'
 import {Helmet} from 'react-helmet'
 function AdminLogin(){
@@ -12,6 +12,8 @@ function AdminLogin(){
     const [adminUserDetails,setAdminUserDetails] = useState({Username:'',password:''})
     const [error,setError] = useState({error:false,errorMessage:''})
     const [showPassword,setShowPassword] = useState(false)
+    const errorTimerRef = useRef(null)
+    
     const [focusInput,setFocusInput] = useState({
         focusAdminUserNameInput:false,
         focusAdminPasswordInput:false
@@ -57,13 +59,7 @@ function AdminLogin(){
 
     async function handleLoginClick(){
       if (adminUserDetails.Username === '' || adminUserDetails.password === ''){
-            setError((prev) => {
-                return {
-                    ...prev,
-                    error:true,
-                    errorMessage:'Please fill all the details'
-                }
-            })
+            showErrorMessage('Please fill in all the details !')
         }
         else {
             const result = await getAdminUser(adminUserDetails.Username,adminUserDetails.password)
@@ -74,22 +70,10 @@ function AdminLogin(){
                     setIsAuth(true)
                     navigate("/admin/dashboard")
                 } else if (!adminUser.adminUser) {
-                    setError((prev)=>{
-                        return {
-                            ...prev,
-                            error:true,
-                            errorMessage:adminUser.message
-                        }
-                    })
+                    showErrorMessage(adminUser.message)
                 }
             } else {
-                setError((prev)=>{
-                    return {
-                        ...prev,
-                        error:true,
-                        errorMessage:'Something went wrong !'
-                    }
-                })
+                showErrorMessage('Something went wrong !')
             }
         }
         
@@ -99,8 +83,43 @@ function AdminLogin(){
         setShowPassword((prev) => !prev)
     }
 
+    function showErrorMessage(message) {
+        if (errorTimerRef.current) {
+            clearTimeout(errorTimerRef.current)
+            setError((prev)=>{
+                return {
+                    ...prev,
+                    error:true,
+                    errorMessage:message
+                    }
+                })
+        }
+        
+        errorTimerRef.current = setTimeout(() => {
+        setError((prev)=>{
+                return {
+                    ...prev,
+                    error:false
+                    }
+                })
+  }, 3000)
+}
+
+
+
+    useEffect(() => {
+      return () => {
+        if (errorTimerRef.current) {
+          clearTimeout(errorTimerRef.current)
+        }
+      }
+    }, [])
     return(
         <div className="h-screen flex items-center justify-center">
+            <div className={`fixed left-4 right-4 top-5 z-50 rounded-md border border-gray-300 bg-white px-4 py-3 text-red-600 shadow-lg ${error.error ? 'animate-slide-in-down opacity-100 flex items-center gap-2' : 'flex items-center gap-2 animate-slide-out-up hidden  opacity-0 pointer-events-none'}`} aria-live='assertive'>
+                <CircleAlert className='text-red-500'/>
+                <p className='text-red-600'>{error.errorMessage}</p>
+            </div>
             <Helmet>
                 <title>Admin Login</title>
                 <meta name="description" content="Secure admin login for the E-voter platform. Access your school's election management dashboard to oversee and manage the election process with ease." />
@@ -127,9 +146,6 @@ function AdminLogin(){
                         </div>
                     </div>
                 </div>
-                {
-                    error.error ? <p className='text-center text-red-700'>{error.errorMessage}</p> : null
-                }
                 <button onClick={handleLoginClick} className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer hover:opacity-80'>
                     Login
                 </button>
