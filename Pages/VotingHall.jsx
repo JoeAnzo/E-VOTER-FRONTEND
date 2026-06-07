@@ -1,7 +1,7 @@
 import { useEffect,useState, useContext, useRef } from "react";
 import UserProfile from "../Components/UserProfile";
-import { ArrowRight,Check} from "lucide-react";
-import { fetchPrefectPosts,fetchCandidatesPerPost,submitVotes } from "../Services/ApiCalls";
+import { ArrowRight,Check,TriangleAlert,CircleAlert,CheckIcon} from "lucide-react";
+import { fetchPrefectPosts,fetchCandidatesPerPost,fetchPrefects,submitVotes } from "../Services/ApiCalls";
 import { useNavigate } from "react-router-dom";
 import {userContext} from "../Contexts/userContext.js";
 import ProgressBar from "../Components/ProgressBar.jsx";
@@ -16,50 +16,110 @@ function VotingHall(){
 
     const [posts,setPosts] = useState([])
     const [candidates,setCandidates] = useState([])
+    const [candidatesCurrentPost,setCandidatesCurrentPost] = useState([])
     const [nextPost,setNextPost] = useState(0)
     const [progressBar,setProgressBar] = useState(0)
-    const [isClicked,setIsClicked] = useState(null)
+    const [isClickedALEVELCard,setIsClickedALEVELCard] = useState(null)
+    const [isClickedOLEVELCard,setIsClickedOLEVELCard] = useState(null)
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState(false)
-    const [votedForCandidatesCurrentPost,setVotedForCandidatesCurrentPost] = useState([])
-
-    const [nortification,setNortification] = useState({
-        errorMessage:'',
-        displayError:false,
-        votedForMessage:'',
-        displayMessage:false
+    const [errorMessage,setErrorMessage] = useState('')
+    const errorTimerRef = useRef(null)
+    const [hasSelectedAPrefect,setHasSelectedAPrefect] = useState(false)
+    const [receivedCandidates,setReceivedCandidates] = useState({
+        hasALEVEL:null,
+        hasOLEVEL:null,
+        ALEVELCandidates:[],
+        OLEVELCandidates:[]
     })
+   const [ALEVELCandidate,setALEVELCandidate] = useState('')
+   const [OLEVELCandidate,setOLEVELCandidate] = useState('')
+    const [votedForCandidatesCurrentPost,setVotedForCandidatesCurrentPost] = useState([])
 
     const navigate = useNavigate()
     useEffect(()=>{
        async function getData() {
+        setLoading(true)
         const result = await fetchPrefectPosts()
         if (result.success){
             setPosts(result.data.prefectorial_posts);
-            console.log(posts)
         } else {
-            setError(true)
+            showErrorMessage('Something went wrong!')
+        }
+        const allCandidates = await fetchPrefects()
+        if (allCandidates.success){
+            setLoading(false)
+            setCandidates(allCandidates.data.candidates)
+        } else {
+            showErrorMessage('Something went wrong!')
         }
        }
        getData()
     },[])
     useEffect(()=>{
-
         async function getData() {
-            setLoading(true)
-            const result = await fetchCandidatesPerPost(`${posts[nextPost]}`)
-            console.log(result)
-            setLoading(false)
-            if (result.success) {
-                setCandidates(result.data)
+            // Filter candidates for current post
+            const filteredCandidates = candidates.filter((candidate) => {
+                return candidate.prefectorial_Post === `${posts[nextPost]}`
+            })
+            
+            setCandidatesCurrentPost(filteredCandidates)
+            
+            if (filteredCandidates && filteredCandidates.length > 0) {
+                const hasALEVEL = filteredCandidates.some((candidate) => {
+                    return candidate.education_Level === "A-Level"
+                })
+
+                const hasOLEVEL = filteredCandidates.some((candidate) => {
+                    return candidate.education_Level === "O-Level"
+                })
+
+                // Reset receivedCandidates
+                setReceivedCandidates({
+                    hasALEVEL: false,
+                    hasOLEVEL: false,
+                    ALEVELCandidates: [],
+                    OLEVELCandidates: []
+                })
+
+                if (hasALEVEL){
+                    const aLEVELCandidates = filteredCandidates.filter((candidate) => {
+                        return candidate.education_Level === "A-Level"
+                    })
+                    setReceivedCandidates((prev) => {
+                        return {
+                            ...prev,
+                            hasALEVEL: true,
+                            ALEVELCandidates: aLEVELCandidates
+                        }
+                    })
+                }
+                
+                if (hasOLEVEL){
+                    const oLEVELCandidates = filteredCandidates.filter((candidate) => {
+                        return candidate.education_Level === "O-Level"
+                    })
+                    setReceivedCandidates((prev) => {
+                        return {
+                            ...prev,
+                            hasOLEVEL: true,
+                            OLEVELCandidates: oLEVELCandidates
+                        }
+                    })
+                }
             } else {
-                setError(true)
+                setReceivedCandidates({
+                    hasALEVEL: false,
+                    hasOLEVEL: false,
+                    ALEVELCandidates: [],
+                    OLEVELCandidates: []
+                })
             }
         }
-        if (posts.length > 0) {
+        if (posts.length > 0 && candidates.length > 0) {
             getData()
         }
-    },[nextPost,posts])
+    },[nextPost, posts, candidates])
 
     useEffect(() => {
         if (scrollContainerRef.current) {
@@ -74,7 +134,17 @@ function VotingHall(){
 
     async function handleNextPost(){
         // Check if user has voted for current post
+      
         const currentPost = posts[nextPost]
+
+        // Resetting Received Candidates
+
+
+        // Resetting O and A Level Candidate For the next Post
+
+        setALEVELCandidate('')
+        setOLEVELCandidate('')
+
 
         const hasVotedForCurrentPost = votedForCandidatesCurrentPost.some(candidate =>
             candidate.prefectorial_Post === currentPost
@@ -108,34 +178,29 @@ function VotingHall(){
             if (hasVotedForALevel && hasVotedForOLevel){
                 canProceed = true
             } else if(!hasVotedForALevel) {
-                errorMessage = `Please vote for a ${currentPost} A-Level before proceeding.`
+                showErrorMessage(`Please vote for a ${currentPost} A-Level before proceeding.`)
             } else {
-                errorMessage = `Please vote for a ${currentPost} O-Level before proceeding.`
+                showErrorMessage(`Please vote for a ${currentPost} O-Level before proceeding.`)
+                console.log(error,errorMessage)
             }
         } else {
             // For posts with only one level or none, require at least one vote
             if (hasVotedForCurrentPost) {
                 canProceed = true
             } else {
-                errorMessage = `Please vote for a ${currentPost} before proceeding.`
+                showErrorMessage(`Please vote for a ${currentPost} before proceeding.`)
             }
         }
 
         if (!canProceed) {
-            setNortification((prev) => ({
-                ...prev,
-                displayError: true,
-                displayMessage: false,
-                errorMessage: errorMessage
-            }))
             return
         }
 
         const updatedVotedForCandidates = [...votedForCandidates, ...votedForCandidatesCurrentPost]
         setVotedForCandidates(updatedVotedForCandidates)
 
-        setIsClicked(null)
-        setNortification(prev => ({...prev, displayMessage: false, displayError: false}))
+        setIsClickedALEVELCard(null)
+        setIsClickedOLEVELCard(null)
 
         if (nextPost === posts.length - 1){
             const submittedVotes = await submitVotes(updatedVotedForCandidates, OTP)
@@ -149,8 +214,31 @@ function VotingHall(){
         setNextPost((prev) => prev + 1)
         setVotedForCandidatesCurrentPost([])
     }
+    function showErrorMessage(message) {
+      if (errorTimerRef.current) {
+        clearTimeout(errorTimerRef.current)
+      }
+      setErrorMessage(message)
+      setError(true)
+      errorTimerRef.current = setTimeout(() => {
+        setError(false)
+      }, 3000)
+    }
+    
+    useEffect(() => {
+      return () => {
+        if (errorTimerRef.current) {
+          clearTimeout(errorTimerRef.current)
+        }
+      }
+    }, [])
+
     return(
         <div className="bg-white dark:bg-[#0F172A] flex flex-col h-screen">
+        <div className={`fixed left-4 right-4 top-5 z-50 rounded-md border border-gray-300 bg-white px-4 py-3 text-red-600 flex items-center gap-2 shadow-lg ${error ? 'animate-slide-in-down opacity-100' : 'animate-slide-out-up hidden  opacity-0 pointer-events-none'}`} aria-live='assertive'>
+            <CircleAlert className='text-red-500'/>
+            <p className='text-red-600'>{errorMessage}</p>
+        </div>
         <Helmet>
             <title>Voting Hall</title>
             <meta name="description" content="Participate in your school's democratic process by voting for your preferred candidates in the E-voter platform." />
@@ -161,7 +249,7 @@ function VotingHall(){
             <ProgressBar posts={posts} nextPost={nextPost} setProgressBar={setProgressBar}/>
         </div>
         <div ref={scrollContainerRef} className="flex-1 overflow-y-auto hide-scrollbar">
-        <div className="text-xl p-2 rounded-md shadow-2xl text-center space-y-5 border-1 w-[98%] mx-auto border-gray-400 mt-4">
+        <div className="text-xl p-2 rounded-md text-center space-y-5 border w-[98%] mx-auto border-gray-400 mt-4">
             {/* <div className="">
                 <div className="mx-auto top-95 z-40 absolute left-0 right-0">
                     {
@@ -183,12 +271,27 @@ function VotingHall(){
                         loading ? 
                         <div className="h-50 mt-20 flex items-center justify-center"><OrbitProgress className="mx-auto my-auto"
                          color="#5478FF" size="medium"/>
-                         </div>:error ? <p className="text-red-700 text-center">Something went wrong</p>:<>
-                            <div className="flex justify-between items-center w-full">
+                         </div>:<>
+                            <div className="flex justify-between items-center w-full py-2">
                                 <h1 className="text-center dark:text-white text-slate-900 my-2 text-2xl">{nextPost < 10 ? `0${nextPost + 1}`:nextPost + 1} {posts[nextPost]}</h1>
-                                <h2 className="text-slate-900 dark:text-white">pending</h2>
+                                <div className="flex items-center gap-1">
+                                    {
+                                        OLEVELCandidate !== '' && ALEVELCandidate !== '' ? 
+                                        <>
+                                            <CheckIcon className="text-green-400"/>
+                                            <p className="text-green-400">Completed</p>
+                                        </>
+                                         : 
+                                        <>
+                                            <TriangleAlert size={24} className="text-red-500"/>
+                                            <p className="text-red-500">pending</p>
+                                        </>
+                                    }
+                                    
+                                </div>
+                                
                             </div>
-                            <div className="flex flex-wrap gap-4">
+                            {/* <div className="flex flex-wrap gap-4">
                                 {
                                     candidates.map((candidate,index)=>{
                                     return(
@@ -196,6 +299,53 @@ function VotingHall(){
                                         )
                                     })
                                 }
+                            </div> */}
+                            <div className="flex flex-col">
+                                
+                                <div className="flex justify-between items-center w-full p-1 border border-gray-400 rounded-xl">
+                                    <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">{receivedCandidates.hasALEVEL? 'A-LEVEL':null}</h2>
+                                    {ALEVELCandidate === '' ? <div className="flex gap-1.5 items-center"><TriangleAlert size={24} className="text-red-500"/><p className="text-red-500">pending</p></div> : <div className="flex gap-1.5"><CheckIcon className="text-green-400"/><p className="text-green-400">{ALEVELCandidate}</p></div>}
+                                </div>
+                                <div className="flex flex-wrap gap-4 py-2">
+                                    {
+                                        receivedCandidates.hasALEVEL ? receivedCandidates.ALEVELCandidates.map((candidate,index)=>{
+                                        return(
+                                            <PrefectCard 
+                                            key={index} 
+                                            votedForCandidatesCurrentPost={votedForCandidatesCurrentPost} 
+                                            candidate={candidate}
+                                            showErrorMessage={showErrorMessage}
+                                            index={index} 
+                                            setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost}
+                                            setALEVELCandidate={setALEVELCandidate}
+                                            />
+                                            )
+                                        }) : null
+                                    }
+                                </div>
+                            </div>
+                            <div className="flex flex-col">
+                                <div className="flex justify-between items-center w-full p-1  border border-gray-400 rounded-xl">
+                                    <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">{receivedCandidates.hasOLEVEL ? 'O-LEVEL':null}</h2>
+                                    {OLEVELCandidate === '' ? <div className="flex gap-1 items-center"><TriangleAlert className="text-red-500"/><p className="text-red-500">Pending</p></div> : <div><p className="text-green-400 flex gap-1 items-center"><CheckIcon className="text-green-400"/>{OLEVELCandidate}</p></div>}
+                                </div>
+                                <div className="flex flex-wrap gap-4 py-2">
+                                    {
+                                    receivedCandidates.hasOLEVEL ? receivedCandidates.OLEVELCandidates.map((candidate,index)=>{
+                                    return(
+                                        <PrefectCard 
+                                        key={index}  
+                                        votedForCandidatesCurrentPost={votedForCandidatesCurrentPost}
+                                        candidate={candidate} 
+                                        showErrorMessage={showErrorMessage} 
+                                        index={index}
+                                        setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost} 
+                                        setOLEVELCandidate={setOLEVELCandidate}
+                                        />
+                                        )
+                                    }) : null
+                                    }
+                                </div>
                             </div>
                             
                         </>
@@ -204,8 +354,8 @@ function VotingHall(){
             <div className="flex py-4 my-20 items-end mx-auto mb-4 px-4 justify-end w-[98%]">
                 {
                     loading ? null :
-                    <button className="dark:bg-[#1E293B] bg-[#5478FF] cursor-pointer text-white py-2.5 px-5.5 rounded-md flex gap-2 items-center" onClick={handleNextPost}>
-                        {(nextPost === posts.length - 1) ? 'Submit':'Next'} <ArrowRight color='white'/>
+                    <button className="bg-[#5478FF] cursor-pointer text-white py-2.5 px-5.5 rounded-xl flex gap-2 items-center" onClick={handleNextPost}>
+                        {(nextPost === posts.length - 1) ? 'Submit Votes':'Continue'} <ArrowRight color='white'/>
                     </button>
                 }
             </div>

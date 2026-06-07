@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react"
 import { getCurrentYear } from "../utils/currentDate"
-
+import {ClipboardCheck} from 'lucide-react'
 function ProgressBar({posts,nextPost,progressBar,setProgressBar}){
 
     const percentage = posts.length > 0 ? Math.min(nextPost/(posts.length - 1) * 100,100) : 0
@@ -13,18 +13,21 @@ function ProgressBar({posts,nextPost,progressBar,setProgressBar}){
         
         },[nextPost])
     return(
-        <div className="bg-white border-gray-400 border-1 dark:bg-[#1E293B]/30 backdrop-filter backdrop-blur-xl text-slate-900 dark:text-white mt-4 space-y-4 w-[98%] mx-auto py-4 rounded-md px-2 shadow-2xl">
+        <div className="bg-white border-gray-400 border dark:bg-[#1E293B]/30 backdrop-filter backdrop-blur-xl text-slate-900 dark:text-white mt-4 space-y-4 w-[98%] mx-auto py-4 rounded-md px-2">
             <div className="flex justify-between">
                 <div>
-                    <h2 className="text-left">
-                    OFFICIAL BALLOT - {currentYear}<br/>
-                    Prefects Election
-                    </h2>
-                    <p>
-                        Choose one candidate per position.<br/>
-                        Your ballot is anonymous and encrypted.
-
-                    </p>
+                    <div className="flex gap-2 items-start">
+                        <ClipboardCheck className="dark:text-white dark:text-slate-900"/>
+                        <div>
+                        <h2 className="text-left">
+                            OFFICIAL BALLOT - {currentYear}<br/>
+                            Prefects Election
+                        </h2>
+                        <p>
+                            Choose one candidate per position.
+                        </p>
+                        </div>
+                    </div>
                 </div>
                 <div className="flex flex-col items-center">
                     <h2>Positions</h2>

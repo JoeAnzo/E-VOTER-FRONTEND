@@ -8,7 +8,7 @@ function UserProfile({studentInfo}) {
    console.log(studentInfo)
   return (
    <nav 
-   className='flex justify-between bg-white items-center dark:bg-[#1E293B]/30 dark:text-white/30 backdrop-filter backdrop-blur-xl  shadow-xl pl-2 py-2 border-1 border-gray-400'>
+   className='flex justify-between bg-white items-center dark:bg-[#1E293B]/30 dark:text-white/30 backdrop-filter backdrop-blur-xl pl-2 py-2 border border-gray-400'>
          <div className='flex items-center justify-center gap-2'>
             <Logo/>
             <h1 className='sm:text-2xl text-xl text-slate-900 dark:text-white'>Evoter</h1>

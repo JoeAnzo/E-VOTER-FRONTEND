@@ -2,76 +2,81 @@ import React, { useContext,useEffect, useState } from "react";
 import { userContext } from "../Contexts/userContext.js";
 import useInView from '../Hooks/useInView.jsx'
 
-function PrefectCard({candidate,isClicked,setIsClicked,id,setNortification,index,votedForCandidatesCurrentPost,setVotedForCandidatesCurrentPost}){
+function PrefectCard(
+    {
+    
+    candidate,
+    showErrorMessage,
+    index,
+    votedForCandidatesCurrentPost,
+    setVotedForCandidatesCurrentPost,
+    setALEVELCandidate,
+    setOLEVELCandidate
+    }
+){
     
     const [ref,isVisible] = useInView({
         threshold:0.5
     })
 
-    console.log(isVisible)
-
-    function handleClick(candidate){
-
-        console.log(votedForCandidatesCurrentPost)
-
-        // Check if student has already voted for this post and education level
-        const hasAlreadyVotedForThisPost = votedForCandidatesCurrentPost.some((votedCandidate) => {
-            return votedCandidate.prefectorial_Post === candidate.prefectorial_Post &&
-                   votedCandidate.education_Level === candidate.education_Level
-        })
-        if (hasAlreadyVotedForThisPost) {
-            // Show error notification instead of allowing the vote
-            setNortification((prev) => ({
-                ...prev,
-                displayMessage: false,
-                displayError: true,
-                errorMessage: `You have already voted for ${candidate.prefectorial_Post} (${candidate.education_Level}). You can only vote once per position.`
-            }))
-            return // Exit early, don't proceed with voting
-        }
-
-        // If no duplicate found, proceed with voting
-        setIsClicked(id)
-        setNortification((prev) => ({
-            ...prev,
-            displayMessage: true,
-            displayError: false,
-            votedForMessage: `Voted for ${candidate.Candidate_Name} for ${candidate.prefectorial_Post} ${candidate.education_Level}`
-        }))
-
-        setVotedForCandidatesCurrentPost((prev) => [...prev, {
-            Candidate_Name: candidate.Candidate_Name,
-            education_Level: candidate.education_Level,
-            prefectorial_Post: candidate.prefectorial_Post
-        }])
-    }
-
-    const hasAlreadyVotedForThisCandidate = votedForCandidatesCurrentPost.some((votedCandidate) => {
+    // Check if this specific candidate was voted for
+    const isChecked = votedForCandidatesCurrentPost.some((votedCandidate) => {
         return votedCandidate.Candidate_Name === candidate.Candidate_Name &&
                votedCandidate.prefectorial_Post === candidate.prefectorial_Post &&
                votedCandidate.education_Level === candidate.education_Level
     })
 
-    let checked = isClicked || hasAlreadyVotedForThisCandidate
+    
+    
+    function handleClick(candidate){
+        
+        // Check if student has already voted for this post and education level
+        const hasAlreadyVotedForThisPost = votedForCandidatesCurrentPost.some((votedCandidate) => {
+            return votedCandidate.prefectorial_Post === candidate.prefectorial_Post &&
+                   votedCandidate.education_Level === candidate.education_Level
+        })
+
+        // If already voted for this position and education level, prevent voting again
+        if (hasAlreadyVotedForThisPost) {
+            showErrorMessage(`You have already voted for ${candidate.prefectorial_Post} (${candidate.education_Level}).`)
+            return
+        }
+
+        // Add vote to the list
+        setVotedForCandidatesCurrentPost((prev) => [...prev, {
+            Candidate_Name: candidate.Candidate_Name,
+            education_Level: candidate.education_Level,
+            prefectorial_Post: candidate.prefectorial_Post
+        }])
+
+        // Update the candidate name display
+        if (candidate.education_Level === 'A-Level'){
+            setALEVELCandidate(candidate.Candidate_Name)
+        } else {
+            setOLEVELCandidate(candidate.Candidate_Name)
+        }
+    }
+
+    
 
     return(
         <>
-        <div ref={ref} onClick={() => handleClick(candidate)} key={candidate.id} style={{
+        <div ref={ref} onClick={() => handleClick(candidate)} style={{
             transform: isVisible ? 'translateX(0) translateY(0)' : 'translateX(-5rem) translateY(2rem)',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 500ms ease-out, transform 500ms ease-out',
             transitionDelay: `${index * 0.15}s`,
             willChange: 'opacity, transform'
-          }} className={`flex w-[98%] sm:w-125 pr-2 text-slate-900 dark:text-white items-center hover:cursor-pointer justify-between shadow-2xl bg-[F9FAFB] dark:bg-[#1E293B] rounded-md ${(isClicked || checked) ? 'border-2 border-[#5478FF]':''}`}>
-            <img className='h-50 w-37.5 sm:w-50 rounded-md object-cover object-center' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
+          }} className={`flex w-[98%] sm:w-125 pr-2 text-slate-900 dark:text-white items-center backdrop-filter backdrop-blur-xl hover:cursor-pointer justify-between bg-[F9FAFB] dark:bg-[#1E293B]/30 rounded-md ${(isChecked) ? 'border-2 border-[#5478FF] shadow-[inset_0_0_15px_rgba(84,120,255,0.2)]':'border border-gray-400'}`}>
+            <img className='w-30 h-40 rounded-md object-cover object-top anti' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
             <div>
                 <p>{candidate.Candidate_Name}</p>
                 <p>{candidate.education_Level}</p>
                 <p>{candidate.Class} {candidate.Stream}</p>
             </div>
             <div className="flex items-center gap-2">
-                {isClicked ? 'Voted':'vote'}
-                <input className="w-4 h-4 accent-[#5478FF]" type='checkbox' checked={checked}/>
+                 {isChecked ? 'Voted':'vote'}
+                <input className="w-5 h-5 rounded-full  text-blue-600 focus:ring-blue-500/30 accent-[#5478FF]" type='checkbox' checked={isChecked}/>
             </div>          
         </div>
         </>

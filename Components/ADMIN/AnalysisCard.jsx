@@ -17,12 +17,12 @@ function AnalysisCard({heading,icon,numberDisplay}) {
     return () => clearInterval(interval)
   }, [numberDisplay])
   return (
-    <div className="dark:text-white hover:text-white text-slate-900 py-10 rounded-lg hover:cursor-pointer bg-white dark:bg-[#1E293B] shadow-md hover:shadow-xl transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:scale-[1.01] hover:bg-[#5478FF] sm:w-full w-[98%] flex items-center justify-evenly gap-4">
+    <div className="dark:text-white border border-gray-400 backdrop-filter backdrop-blur-xl hover:text-white text-slate-900 py-10 rounded-lg hover:cursor-pointer bg-white/30 dark:bg-[#1E293B] shadow-md hover:shadow-xl transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:scale-[1.01] hover:bg-[#5478FF] sm:w-full w-[98%] flex items-center justify-evenly gap-4">
         <div className="flex flex-col items-center justify-center">
           <h2>{heading}</h2>
           <h2>{animateFigures}</h2>
         </div>
-        <div className="dark:bg-[#0F172A] bg-[#5478FF] p-2 rounded-md">
+        <div className="bg-[#5478FF] p-2 rounded-md">
           {icon}
         </div>
     </div>

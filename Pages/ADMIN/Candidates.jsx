@@ -1,7 +1,7 @@
 import AdminNavBar from "../../Components/ADMIN/AdminNavBar"
 import SideBar from "../../Components/ADMIN/SideBar"
 import AnalysisCard from "../../Components/ADMIN/AnalysisCard"
-import {ChevronDown,SearchIcon} from "lucide-react"
+import {ChevronDown,SearchIcon,UserPlus} from "lucide-react"
 import CandidateDetails from "../../Components/ADMIN/CandidateDetails"
 import { fetchPrefects,searchCandidate } from "../../Services/ApiCalls"
 import PrefectList from "../../Components/ADMIN/PrefectList"
@@ -87,7 +87,7 @@ function Candidates() {
                                     <SearchIcon onClick={handleSearchQuery} className="dark:text-white text-slate-900"/>
                                 </div>
                                 <div>
-                                    <button className="text-white px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]">Add a Candidate</button>
+                                    <button className="text-white flex gap-2 px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]"><UserPlus className="text-white"/>Add a Candidate</button>
                                 </div>
                         </div>
                         

@@ -67,7 +67,7 @@ function handleClickStream(){
   setShowStream((prev)=> !prev)
 }
 
-console.log(errorTimerRef.current)
+
 
 function showErrorMessage(message) {
   if (errorTimerRef.current) {
@@ -148,9 +148,6 @@ async function handleSubmit(e){
         <form 
         onSubmit={handleSubmit} className='dark:bg-[#1E293B] bg-[F9FAFB] backdrop-filter backdrop-blur-xl  shadow-xl p-6 rounded-xl mt-10 space-y-4 sm:w-125 w-[90%] relative border-gray-400 border-1'>
           {/* Background image here */}
-          <div className="absolute top-0 bottom-0 left-0 right-0 -z-50 flex items-center justify-center">
-            <img className='max-w-full h-auto' src={backgroundImage} alt="voting-image" />
-          </div>
           <div className='absolute top-10 right-10'>
             <ThemeIcon/>
           </div>
@@ -164,7 +161,7 @@ async function handleSubmit(e){
               <input
                 onClick={handleInputClick}
                 onChange={handleInput} value={name} 
-                className={`dark:bg-gray-100  bg-gray-300 text-[#5478FF] rounded-xl py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':'border-1 border-gray-400'}`} placeholder='eg. Mukasa Brian'/>
+                className={`dark:bg-gray-100  bg-gray-300 text-[#5478FF] rounded-xl placeholder:text-[#5478FF] py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':'border-1 border-gray-400'}`} placeholder='eg. Mukasa Brian'/>
               <selectContext.Provider value={{setName,setGrade,setStream,setDisplaySearch}}>
                   {
                     displaySearch ? <SearchResults results={searchResults}/>:null
@@ -191,7 +188,7 @@ async function handleSubmit(e){
              </selectContext.Provider>
           </div>
           <label className='dark:text-white text-slate-900'>Enter your OTP</label>
-          <input type="text" value={OTP} onChange={(e) => setOTP(e.target.value)} className={`bg-gray-300 border-1 border-gray-400 dark:bg-gray-100 text-[#5478FF] rounded-xl py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='Enter your otp here' />
+          <input type="text" value={OTP} onChange={(e) => setOTP(e.target.value)} className={`bg-gray-300 border placeholder:text-[#5478FF] border-gray-400 dark:bg-gray-100 text-[#5478FF] rounded-xl py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='Enter your otp here' />
            <button type='submit' className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer flex justify-center gap-2 hover:opacity-80 shadow-md'>
              {loading ? 'Verifying Info ...' : 'Enter Voting Hall'}
              {loading ? null: <LogIn color='white'/>}

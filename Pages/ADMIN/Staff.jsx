@@ -1,7 +1,7 @@
 import AdminNavBar from "../../Components/ADMIN/AdminNavBar"
 import SideBar from "../../Components/ADMIN/SideBar"
 import AnalysisCard from "../../Components/ADMIN/AnalysisCard"
-import { GraduationCap,Users,User,FileIcon,XIcon} from "lucide-react"
+import { GraduationCap,Users,User,FileIcon,XIcon,UserPlus} from "lucide-react"
 import { fetchStaffMembers,generateOTPsForStaff } from "../../Services/ApiCalls"
 import { Helmet } from "react-helmet"
 import { useState,useEffect } from "react"
@@ -91,7 +91,7 @@ function Staff() {
                 <div className="flex  justify-between items-center  pl-4">
                     <h2 className="dark:text-white text-slate-900 my-4 text-2xl sm:text-2xl">Manage Staff/Teachers here</h2>
                     <div className="gap-4 flex pr-4">
-                        <button className="text-white px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]">Add a Staff Member /Teacher</button>
+                        <button className="text-white flex gap-2 px-2 py-2 rounded-lg hover:cursor-pointer bg-[#5478FF]"><UserPlus className="text-white"/>Add a Staff Member /Teacher</button>
                     </div>
                 </div>
                 <div className="text-center fixed z-30 mx-auto right-0 left-0 sm:left-60  p-4">

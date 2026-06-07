@@ -9,8 +9,8 @@ function SideBarLink({ path, icon, textDisplay}){
     }
     return(
         <NavLink onClick={handleClick} to={path} className={({ isActive }) =>
-        `flex gap-2 p-4 rounded-md ${isActive ? "bg-[#5478FF] text-white" : "hover:bg-[#5478FF] hover:text-white"}`}>{icon}{textDisplay}
-        {textDisplay === "Students" || textDisplay === "Staff/Teachers" ? <div className="sm:none"><ChevronDown className="dark:text-white text-slate-900"/></div>:null}
+        `flex gap-2 p-2 hover:bg-gray-50/30 rounded-md ${isActive ? "bg-[#5478FF] text-white" : "hover:bg-[#5478FF] hover:text-white"}`}>{icon}{textDisplay}
+        {textDisplay === "Students" || textDisplay === "Staff/Teachers" ? <div className="sm:none hover:text-white"></div>:null}
         </NavLink>  
     )
 }

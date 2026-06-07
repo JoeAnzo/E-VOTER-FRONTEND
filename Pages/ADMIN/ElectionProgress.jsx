@@ -4,6 +4,7 @@ import SideBar from "../../Components/ADMIN/SideBar"
 import ResultsBarChartPerPost from "../../Components/ResultsBarChartPerPost.jsx"
 import {Helmet} from 'react-helmet'
 import { useState,useEffect } from "react"
+import {SignalMedium} from 'lucide-react'
 import SchoolVotingProgress from "../../Components/ADMIN/SchoolVotingProgress.jsx"
 function ElectionProgress() {
     const [posts,setPosts] = useState([])
