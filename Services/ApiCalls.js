@@ -1,9 +1,12 @@
 import Students from "../Pages/ADMIN/Students"
 
- const base_url = import.meta.env.VITE_BACKEND_URL
+const base_url = import.meta.env.VITE_BACKEND_URL || ''
 
 async function searchStudent(name) {
   try {
+    if (!base_url) {
+      throw new Error('VITE_BACKEND_URL is not defined')
+    }
     const response = await fetch(`${base_url}/v1/api/Students/search?q=${name}`)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
@@ -11,7 +14,7 @@ async function searchStudent(name) {
     const data = await response.json()
     return { success: true, data }
   } catch (error) {
-    console.log(error.message)
+    console.error('searchStudent error:', error.message)
     return { success: false, error: error.message }
   }
 }
@@ -60,14 +63,17 @@ async function fetchStudent(name, Class, Stream) {
 
 async function fetchPrefectPosts() {
   try {
+    if (!base_url) {
+      throw new Error('VITE_BACKEND_URL is not defined')
+    }
     const response = await fetch(`${base_url}/v1/api/Candidates/posts`)
-    // if (!response.ok) {
-    //   throw new Error(`HTTP error! status: ${response.status}`)
-    // }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
     const data = await response.json()
     return { success: true, data }
   } catch (error) {
-    console.log(error.message)
+    console.error('fetchPrefectPosts error:', error.message)
     return { success: false, error: error.message }
   }
 }
@@ -189,6 +195,9 @@ async function fetchStudentsPerClass(grade){
 
 async function fetchPrefects(){
   try {
+    if (!base_url) {
+      throw new Error('VITE_BACKEND_URL is not defined')
+    }
     const response = await fetch(`${base_url}/v1/api/Candidates`)
     if (response.ok){
       const data = await response.json()
@@ -200,7 +209,7 @@ async function fetchPrefects(){
       throw new Error(`HTTP Error! status: ${response.status}`)
     }
   } catch (error) {
-    console.log(error.message)
+    console.error('fetchPrefects error:', error.message)
     return { success: false, error: error.message }
   }
 }
