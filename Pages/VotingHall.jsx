@@ -50,6 +50,7 @@ function VotingHall(){
         if (allCandidates.success){
             setLoading(false)
             setCandidates(allCandidates.data.candidates)
+            console.log(candidates)
         } else {
             showErrorMessage('Something went wrong!')
         }
@@ -62,6 +63,8 @@ function VotingHall(){
             const filteredCandidates = candidates.filter((candidate) => {
                 return candidate.prefectorial_Post === `${posts[nextPost]}`
             })
+
+            console.log(filteredCandidates)
             
             setCandidatesCurrentPost(filteredCandidates)
             
