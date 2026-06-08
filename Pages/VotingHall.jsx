@@ -150,11 +150,11 @@ function VotingHall(){
             candidate.prefectorial_Post === currentPost
         )
 
-        const currentPostContainsA_Level = candidates.some(candidate => {
+        const currentPostContainsA_Level = candidatesCurrentPost.some(candidate => {
             return candidate.education_Level === 'A-Level'
         })
 
-        const currentPostContainsO_Level = candidates.some(candidate => {
+        const currentPostContainsO_Level = candidatesCurrentPost.some(candidate => {
             return candidate.education_Level === 'O-Level'
         })
 
