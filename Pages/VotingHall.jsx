@@ -1,4 +1,4 @@
-import { useEffect,useState, useContext, useRef } from "react";
+import { useEffect,useState, useContext, useRef, useMemo } from "react";
 import UserProfile from "../Components/UserProfile";
 import { ArrowRight,Check,TriangleAlert,CircleAlert,CheckIcon} from "lucide-react";
 import { fetchPrefectPosts,fetchCandidatesPerPost,fetchPrefects,submitVotes } from "../Services/ApiCalls";
@@ -16,7 +16,6 @@ function VotingHall(){
 
     const [posts,setPosts] = useState([])
     const [candidates,setCandidates] = useState([])
-    const [candidatesCurrentPost,setCandidatesCurrentPost] = useState([])
     const [nextPost,setNextPost] = useState(0)
     const [progressBar,setProgressBar] = useState(0)
     const [isClickedALEVELCard,setIsClickedALEVELCard] = useState(null)
@@ -26,12 +25,6 @@ function VotingHall(){
     const [errorMessage,setErrorMessage] = useState('')
     const errorTimerRef = useRef(null)
     const [hasSelectedAPrefect,setHasSelectedAPrefect] = useState(false)
-    const [receivedCandidates,setReceivedCandidates] = useState({
-        hasALEVEL:null,
-        hasOLEVEL:null,
-        ALEVELCandidates:[],
-        OLEVELCandidates:[]
-    })
    const [ALEVELCandidate,setALEVELCandidate] = useState('')
    const [OLEVELCandidate,setOLEVELCandidate] = useState('')
     const [votedForCandidatesCurrentPost,setVotedForCandidatesCurrentPost] = useState([])
@@ -50,79 +43,41 @@ function VotingHall(){
         if (allCandidates.success){
             setLoading(false)
             setCandidates(allCandidates.data.candidates)
-            console.log(candidates)
         } else {
             showErrorMessage('Something went wrong!')
         }
        }
        getData()
     },[])
-    useEffect(()=>{
-        async function getData() {
-            // Filter candidates for current post
-            const filteredCandidates = candidates.filter((candidate) => {
-                return candidate.prefectorial_Post === `${posts[nextPost]}`
-            })
 
-            console.log(filteredCandidates)
-            
-            setCandidatesCurrentPost(filteredCandidates)
-            
-            if (filteredCandidates && filteredCandidates.length > 0) {
-                const hasALEVEL = filteredCandidates.some((candidate) => {
-                    return candidate.education_Level === "A-Level"
-                })
-
-                const hasOLEVEL = filteredCandidates.some((candidate) => {
-                    return candidate.education_Level === "O-Level"
-                })
-
-                // Reset receivedCandidates
-                setReceivedCandidates({
-                    hasALEVEL: false,
-                    hasOLEVEL: false,
-                    ALEVELCandidates: [],
-                    OLEVELCandidates: []
-                })
-
-                if (hasALEVEL){
-                    const aLEVELCandidates = filteredCandidates.filter((candidate) => {
-                        return candidate.education_Level === "A-Level"
-                    })
-                    setReceivedCandidates((prev) => {
-                        return {
-                            ...prev,
-                            hasALEVEL: true,
-                            ALEVELCandidates: aLEVELCandidates
-                        }
-                    })
-                }
-                
-                if (hasOLEVEL){
-                    const oLEVELCandidates = filteredCandidates.filter((candidate) => {
-                        return candidate.education_Level === "O-Level"
-                    })
-                    setReceivedCandidates((prev) => {
-                        return {
-                            ...prev,
-                            hasOLEVEL: true,
-                            OLEVELCandidates: oLEVELCandidates
-                        }
-                    })
-                }
-            } else {
-                setReceivedCandidates({
-                    hasALEVEL: false,
-                    hasOLEVEL: false,
-                    ALEVELCandidates: [],
-                    OLEVELCandidates: []
-                })
-            }
+    const candidatesCurrentPost = useMemo(() => {
+        if (!posts.length || !candidates.length) {
+            return []
         }
-        if (posts.length > 0 && candidates.length > 0) {
-            getData()
+        const currentPost = posts[nextPost]
+        return candidates.filter((candidate) => {
+            return String(candidate.prefectorial_Post).trim() === String(currentPost).trim()
+        })
+    }, [posts, candidates, nextPost])
+
+    const receivedCandidates = useMemo(() => {
+        const ALEVELCandidates = candidatesCurrentPost.filter((candidate) => candidate.education_Level === 'A-Level')
+        const OLEVELCandidates = candidatesCurrentPost.filter((candidate) => candidate.education_Level === 'O-Level')
+
+        return {
+            hasALEVEL: ALEVELCandidates.length > 0,
+            hasOLEVEL: OLEVELCandidates.length > 0,
+            ALEVELCandidates,
+            OLEVELCandidates
         }
-    },[nextPost, posts, candidates])
+    }, [candidatesCurrentPost])
+
+    const hasCurrentPostALEVEL = receivedCandidates.hasALEVEL
+    const hasCurrentPostOLEVEL = receivedCandidates.hasOLEVEL
+    const currentPostCompleted = (
+        (!hasCurrentPostALEVEL || ALEVELCandidate !== '') &&
+        (!hasCurrentPostOLEVEL || OLEVELCandidate !== '')
+    )
 
     useEffect(() => {
         if (scrollContainerRef.current) {
@@ -279,7 +234,7 @@ function VotingHall(){
                                 <h1 className="text-center dark:text-white text-slate-900 my-2 text-2xl">{nextPost < 10 ? `0${nextPost + 1}`:nextPost + 1} {posts[nextPost]}</h1>
                                 <div className="flex items-center gap-1">
                                     {
-                                        OLEVELCandidate !== '' && ALEVELCandidate !== '' ? 
+                                        currentPostCompleted ? 
                                         <>
                                             <CheckIcon className="text-green-400"/>
                                             <p className="text-green-400">Completed</p>
@@ -303,17 +258,15 @@ function VotingHall(){
                                     })
                                 }
                             </div> */}
+                            {receivedCandidates.hasALEVEL ? (
                             <div className="flex flex-col">
-                                
                                 <div className="flex justify-between items-center w-full p-1 border border-gray-400 rounded-xl">
-                                    <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">{receivedCandidates.hasALEVEL? 'A-LEVEL':null}</h2>
+                                    <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">A-LEVEL</h2>
                                     {ALEVELCandidate === '' ? <div className="flex gap-1.5 items-center"><TriangleAlert size={24} className="text-red-500"/><p className="text-red-500">pending</p></div> : <div className="flex gap-1.5"><CheckIcon className="text-green-400"/><p className="text-green-400">{ALEVELCandidate}</p></div>}
                                 </div>
                                 <div className="flex flex-wrap gap-4 py-2">
-                                    {
-                                        receivedCandidates.hasALEVEL ? receivedCandidates.ALEVELCandidates.map((candidate,index)=>{
-                                        return(
-                                            <PrefectCard 
+                                    {receivedCandidates.ALEVELCandidates.map((candidate,index) => (
+                                        <PrefectCard 
                                             key={index} 
                                             votedForCandidatesCurrentPost={votedForCandidatesCurrentPost} 
                                             candidate={candidate}
@@ -321,35 +274,37 @@ function VotingHall(){
                                             index={index} 
                                             setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost}
                                             setALEVELCandidate={setALEVELCandidate}
-                                            />
-                                            )
-                                        }) : null
-                                    }
+                                        />
+                                    ))}
                                 </div>
                             </div>
+                            ) : null}
+                            {receivedCandidates.hasOLEVEL ? (
                             <div className="flex flex-col">
                                 <div className="flex justify-between items-center w-full p-1  border border-gray-400 rounded-xl">
-                                    <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">{receivedCandidates.hasOLEVEL ? 'O-LEVEL':null}</h2>
-                                    {OLEVELCandidate === '' ? <div className="flex gap-1 items-center"><TriangleAlert className="text-red-500"/><p className="text-red-500">Pending</p></div> : <div><p className="text-green-400 flex gap-1 items-center"><CheckIcon className="text-green-400"/>{OLEVELCandidate}</p></div>}
+                                    <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">O-LEVEL</h2>
+                                    {OLEVELCandidate === '' ? <div className="flex gap-1 items-center"><TriangleAlert className="text-red-500"/><p className="text-red-500">pending</p></div> : <div><p className="text-green-400 flex gap-1 items-center"><CheckIcon className="text-green-400"/>{OLEVELCandidate}</p></div>}
                                 </div>
                                 <div className="flex flex-wrap gap-4 py-2">
-                                    {
-                                    receivedCandidates.hasOLEVEL ? receivedCandidates.OLEVELCandidates.map((candidate,index)=>{
-                                    return(
+                                    {receivedCandidates.OLEVELCandidates.map((candidate,index) => (
                                         <PrefectCard 
-                                        key={index}  
-                                        votedForCandidatesCurrentPost={votedForCandidatesCurrentPost}
-                                        candidate={candidate} 
-                                        showErrorMessage={showErrorMessage} 
-                                        index={index}
-                                        setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost} 
-                                        setOLEVELCandidate={setOLEVELCandidate}
+                                            key={index}  
+                                            votedForCandidatesCurrentPost={votedForCandidatesCurrentPost}
+                                            candidate={candidate} 
+                                            showErrorMessage={showErrorMessage} 
+                                            index={index}
+                                            setVotedForCandidatesCurrentPost={setVotedForCandidatesCurrentPost} 
+                                            setOLEVELCandidate={setOLEVELCandidate}
                                         />
-                                        )
-                                    }) : null
-                                    }
+                                    ))}
                                 </div>
                             </div>
+                            ) : null}
+                            {(!receivedCandidates.hasALEVEL && !receivedCandidates.hasOLEVEL) && (
+                                <div className="py-8 text-center text-sm text-slate-600 dark:text-slate-300">
+                                    No candidates are available for this post.
+                                </div>
+                            )}
                             
                         </>
                 }
