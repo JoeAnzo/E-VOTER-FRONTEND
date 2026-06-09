@@ -1,7 +1,7 @@
 import AdminNavBar from "../../Components/ADMIN/AdminNavBar"
 import SideBar from "../../Components/ADMIN/SideBar"
 import AnalysisCard from "../../Components/ADMIN/AnalysisCard"
-import { GraduationCap,Users,User } from "lucide-react"
+import { GraduationCap,Users,User,Bot } from "lucide-react"
 function Analytics() {
   return (
     <div className="h-screen relative">
@@ -11,10 +11,10 @@ function Analytics() {
                     <SideBar/>
                 </div>
                 <div className="w-[80%]">
-                    <div className="flex justify-between mt-4">
-                    <h2 className="text-white text-2xl">View the Analytics here</h2>
-                    
-                </div>
+                    <div className="flex gap-1.5 mt-4">
+                      <Bot className="dark:text-white text-slate-900"/>
+                      <h2 className="text-white text-2xl">Ask me something concerning the Elections</h2>
+                    </div>
                 </div>
             </div>
     </div>

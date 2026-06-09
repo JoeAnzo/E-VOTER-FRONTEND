@@ -112,6 +112,9 @@ async function checkForStudent(){
         class:grade,
         stream:stream
       }))
+    if (Student.querySearchResult[0].otp === '') {
+      showErrorMessage('Enter your OTP Code')
+    }
     if (Student.querySearchResult[0].otp === parseInt(OTP)){
       if (Student.querySearchResult[0].hasVoted){
         showErrorMessage('Student has already voted')
@@ -161,7 +164,7 @@ async function handleSubmit(e){
               <input
                 onClick={handleInputClick}
                 onChange={handleInput} value={name} 
-                className={`dark:bg-gray-100  bg-gray-300 text-[#5478FF] rounded-xl placeholder:text-[#5478FF] py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':'border-1 border-gray-400'}`} placeholder='eg. Mukasa Brian'/>
+                className={`dark:bg-gray-100  bg-gray-300 text-[#5478FF] rounded-xl placeholder:text-[#5478FF] py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border':'border border-gray-400'}`} placeholder='eg. Mukasa Brian'/>
               <selectContext.Provider value={{setName,setGrade,setStream,setDisplaySearch}}>
                   {
                     displaySearch ? <SearchResults results={searchResults}/>:null
@@ -172,7 +175,7 @@ async function handleSubmit(e){
           <label className='dark:text-white text-slate-900'>Class</label>
           <div
           onClick={handleClickClass}
-          className={`flex text-[#5478FF] justify-between relative dark:bg-gray-100 bg-gray-300 py-2 pl-2 rounded-xl ${focusClass?'border-[#5478FF] border-2':'border-1 border-gray-400'}`}>
+          className={`flex text-[#5478FF] justify-between relative dark:bg-gray-100 bg-gray-300 py-2 pl-2 rounded-xl ${focusClass?'border-[#5478FF] border':'border border-gray-400'}`}>
             {grade === '' ? 'Select Class':grade} <ChevronDown/>
             <selectContext.Provider value={{grade,setGrade}}>
                 <Dropdown options={['S1','S2','S3','S4','S5','S6']} show={showClass}/>
@@ -181,14 +184,14 @@ async function handleSubmit(e){
           <label className='dark:text-white text-slate-900'>Stream</label> 
            <div
            onClick={handleClickStream}
-            className={`flex  text-[#5478FF] justify-between relative bg-gray-300 dark:bg-gray-100 py-2.5 pl-2 rounded-xl ${focusStream?'border-[#5478FF] border-2':'border-1 border-gray-400'}`}>
+            className={`flex  text-[#5478FF] justify-between relative bg-gray-300 dark:bg-gray-100 py-2.5 pl-2 rounded-xl ${focusStream?'border-[#5478FF] border':'border border-gray-400'}`}>
              {stream === '' ? 'Select Stream':stream} <ChevronDown/>
              <selectContext.Provider value={{stream,setStream}}>
                 <Dropdown options={['A','B','C','D']} form6={['Arts','Physicals','Biologicals']} show={showStream} grade={grade}/>
              </selectContext.Provider>
           </div>
           <label className='dark:text-white text-slate-900'>Enter your OTP</label>
-          <input type="text" value={OTP} onChange={(e) => setOTP(e.target.value)} className={`bg-gray-300 border placeholder:text-[#5478FF] border-gray-400 dark:bg-gray-100 text-[#5478FF] rounded-xl py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border-2':''}`} placeholder='Enter your otp here' />
+          <input type="text" value={OTP} onChange={(e) => setOTP(e.target.value)} className={`bg-gray-300 border placeholder:text-[#5478FF] border-gray-400 dark:bg-gray-100 text-[#5478FF] rounded-xl py-2 pl-2 w-full ${focusInput?'bg-[#5478FF] border':''}`} placeholder='Enter your otp here' />
            <button type='submit' className='text-white mt-6 py-2.5 bg-[#5478FF] w-full mx-auto rounded-xl cursor-pointer flex justify-center gap-2 hover:opacity-80 shadow-md'>
              {loading ? 'Verifying Info ...' : 'Enter Voting Hall'}
              {loading ? null: <LogIn color='white'/>}

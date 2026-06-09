@@ -1,5 +1,5 @@
 import { Link,useLocation } from "react-router-dom"
-import {PieChart,LayoutDashboard,ChevronDown,File,LogOutIcon,Download,KeyRoundIcon,GraduationCap,UploadCloud,User2Icon,Users,BarChartBig,KeyRound} from "lucide-react"
+import {PieChart,LayoutDashboard,BotIcon,ChevronDown,File,LogOutIcon,Download,KeyRoundIcon,GraduationCap,UploadCloud,User2Icon,Users,BarChartBig,KeyRound} from "lucide-react"
 import { userContext } from "../../Contexts/userContext.js"
 import { useContext } from "react"
 import SideBarLink from "./SideBarLink.jsx"
@@ -66,7 +66,7 @@ function SideBar({handleGenerateOTPs,handleGenerateStaffOTPs,handleFileUpload,ha
         
         <SideBarLink  path="/admin/candidates" icon={<User2Icon/>} textDisplay="Candidates"/>
         <SideBarLink  path="/admin/elections" icon={<PieChart/>} textDisplay="Election Progress"/>
-        <SideBarLink  path="/admin/analytics" icon={<BarChartBig/>} textDisplay="Analytics"/>
+        <SideBarLink  path="/admin/analytics" icon={<BotIcon/>} textDisplay="AI Assistant"/>
         <SideBarLink  path="/" icon={<LogOutIcon/>} textDisplay="Log out"/>
     </div>
   )

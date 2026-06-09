@@ -70,12 +70,12 @@ function PrefectCard(
           }} className={`flex w-[98%] sm:w-125 pr-2 text-slate-900 dark:text-white items-center backdrop-filter backdrop-blur-xl hover:cursor-pointer justify-between bg-[F9FAFB] dark:bg-[#1E293B]/30 rounded-md ${(isChecked) ? 'border-2 border-[#5478FF] shadow-[inset_0_0_15px_rgba(84,120,255,0.2)]':'border border-gray-400'}`}>
             <img className='w-30 h-40 rounded-md object-cover object-top anti' src={candidate.photo_URL} alt={candidate.Candidate_Name} />
             <div>
-                <p>{candidate.Candidate_Name}</p>
-                <p>{candidate.education_Level}</p>
-                <p>{candidate.Class} {candidate.Stream}</p>
+                <p className="text-sm">{candidate.Candidate_Name}</p>
+                <p className="text-sm">{candidate.education_Level}</p>
+                <p className="text-sm">{candidate.Class} {candidate.Stream}</p>
             </div>
-            <div className="flex items-center gap-2">
-                 {isChecked ? 'Voted':'vote'}
+            <div className="flex text-md items-center gap-2">
+                 <p className="text-sm">{isChecked ? 'Voted':'vote'}</p>
                 <input className="w-5 h-5 rounded-full  text-blue-600 focus:ring-blue-500/30 accent-[#5478FF]" type='checkbox' checked={isChecked}/>
             </div>          
         </div>

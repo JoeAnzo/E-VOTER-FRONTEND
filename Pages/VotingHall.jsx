@@ -18,8 +18,6 @@ function VotingHall(){
     const [candidates,setCandidates] = useState([])
     const [nextPost,setNextPost] = useState(0)
     const [progressBar,setProgressBar] = useState(0)
-    const [isClickedALEVELCard,setIsClickedALEVELCard] = useState(null)
-    const [isClickedOLEVELCard,setIsClickedOLEVELCard] = useState(null)
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState(false)
     const [errorMessage,setErrorMessage] = useState('')
@@ -99,21 +97,17 @@ function VotingHall(){
 
 
         // Resetting O and A Level Candidate For the next Post
-
-        setALEVELCandidate('')
-        setOLEVELCandidate('')
-
-
+        
         const hasVotedForCurrentPost = votedForCandidatesCurrentPost.some(candidate =>
             candidate.prefectorial_Post === currentPost
         )
 
         const currentPostContainsA_Level = candidatesCurrentPost.some(candidate => {
-            return candidate.education_Level === 'A-Level'
+            return candidate.education_Level === 'A-Level' || candidate.education_Level === 'A level'
         })
 
         const currentPostContainsO_Level = candidatesCurrentPost.some(candidate => {
-            return candidate.education_Level === 'O-Level'
+            return candidate.education_Level === 'O-Level' || candidate.education_Level === 'O level'
         })
 
         const currentPostContainsbothEducation_Levels = currentPostContainsA_Level && currentPostContainsO_Level
@@ -125,11 +119,11 @@ function VotingHall(){
 
         if (currentPostContainsbothEducation_Levels){
             const hasVotedForALevel = votedForCandidatesCurrentPost.some((candidate) => {
-                return candidate.education_Level === "A-Level"
+                return candidate.education_Level === "A-Level" || candidate.education_Level === "A level"
             })
             console.log('Has voted A-Level',hasVotedForALevel)
             const hasVotedForOLevel = votedForCandidatesCurrentPost.some((candidate) => {
-                return candidate.education_Level === "O-Level"
+                return candidate.education_Level === "O-Level" || candidate.education_Level === "O level"   
             })
             console.log('Has voted O-Level',hasVotedForOLevel)
             
@@ -167,6 +161,9 @@ function VotingHall(){
             setVotedForCandidates([])
             navigate('/student/submit-vote')
             return
+        } else {
+            setALEVELCandidate('')
+            setOLEVELCandidate('')
         }
 
         setNextPost((prev) => prev + 1)
@@ -236,13 +233,13 @@ function VotingHall(){
                                     {
                                         currentPostCompleted ? 
                                         <>
-                                            <CheckIcon className="text-green-400"/>
-                                            <p className="text-green-400">Completed</p>
+                                            <CheckIcon className="text-green-400 text-sm"/>
+                                            <p className="text-green-400 text-sm">Completed</p>
                                         </>
                                          : 
                                         <>
-                                            <TriangleAlert size={24} className="text-red-500"/>
-                                            <p className="text-red-500">pending</p>
+                                            <TriangleAlert  className="text-red-500 text-sm"/>
+                                            <p className="text-red-500 text-sm">pending</p>
                                         </>
                                     }
                                     
@@ -262,7 +259,7 @@ function VotingHall(){
                             <div className="flex flex-col">
                                 <div className="flex justify-between items-center w-full p-1 border border-gray-400 rounded-xl">
                                     <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">A-LEVEL</h2>
-                                    {ALEVELCandidate === '' ? <div className="flex gap-1.5 items-center"><TriangleAlert size={24} className="text-red-500"/><p className="text-red-500">pending</p></div> : <div className="flex gap-1.5"><CheckIcon className="text-green-400"/><p className="text-green-400">{ALEVELCandidate}</p></div>}
+                                    {ALEVELCandidate === '' ? <div className="flex gap-1.5 items-center"><TriangleAlert className="text-red-500 text-sm"/><p className="text-red-500 text-sm">pending</p></div> : <div className="flex gap-1.5"><CheckIcon className="text-green-400 text-sm"/><p className="text-green-400 text-sm">{ALEVELCandidate}</p></div>}
                                 </div>
                                 <div className="flex flex-wrap gap-4 py-2">
                                     {receivedCandidates.ALEVELCandidates.map((candidate,index) => (
@@ -283,7 +280,7 @@ function VotingHall(){
                             <div className="flex flex-col">
                                 <div className="flex justify-between items-center w-full p-1  border border-gray-400 rounded-xl">
                                     <h2 className="text-center dark:text-white text-slate-900 my-2 text-md">O-LEVEL</h2>
-                                    {OLEVELCandidate === '' ? <div className="flex gap-1 items-center"><TriangleAlert className="text-red-500"/><p className="text-red-500">pending</p></div> : <div><p className="text-green-400 flex gap-1 items-center"><CheckIcon className="text-green-400"/>{OLEVELCandidate}</p></div>}
+                                    {OLEVELCandidate === '' ? <div className="flex gap-1 items-center"><TriangleAlert className="text-red-500 text-sm"/><p className="text-red-500 text-sm">pending</p></div> : <div><p className="text-green-400 flex gap-1 items-center text-sm"><CheckIcon className="text-green-400 text-sm"/>{OLEVELCandidate}</p></div>}
                                 </div>
                                 <div className="flex flex-wrap gap-4 py-2">
                                     {receivedCandidates.OLEVELCandidates.map((candidate,index) => (
