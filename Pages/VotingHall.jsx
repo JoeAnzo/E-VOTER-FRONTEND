@@ -59,8 +59,8 @@ function VotingHall(){
     }, [posts, candidates, nextPost])
 
     const receivedCandidates = useMemo(() => {
-        const ALEVELCandidates = candidatesCurrentPost.filter((candidate) => candidate.education_Level === 'A-Level')
-        const OLEVELCandidates = candidatesCurrentPost.filter((candidate) => candidate.education_Level === 'O-Level')
+        const ALEVELCandidates = candidatesCurrentPost.filter((candidate) => candidate.education_Level === 'A-Level' || candidate.education_Level === 'A level')
+        const OLEVELCandidates = candidatesCurrentPost.filter((candidate) => candidate.education_Level === 'O-Level' || candidate.education_Level === 'O level')
 
         return {
             hasALEVEL: ALEVELCandidates.length > 0,
