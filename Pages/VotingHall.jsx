@@ -151,9 +151,6 @@ function VotingHall(){
         const updatedVotedForCandidates = [...votedForCandidates, ...votedForCandidatesCurrentPost]
         setVotedForCandidates(updatedVotedForCandidates)
 
-        setIsClickedALEVELCard(null)
-        setIsClickedOLEVELCard(null)
-
         if (nextPost === posts.length - 1){
             const submittedVotes = await submitVotes(updatedVotedForCandidates, OTP)
             console.log(submittedVotes)
