@@ -50,7 +50,11 @@ function PrefectCard(
         }])
 
         // Update the candidate name display
+<<<<<<< HEAD
         if (candidate.education_Level === 'A-Level' || candidate.education_Level === 'A Level'){
+=======
+        if (candidate.education_Level === 'A-Level' || candidate.education_Level === 'A level'){
+>>>>>>> 49334d1388c160ae12477f82ffe1476cca920b05
             setALEVELCandidate(candidate.Candidate_Name)
         } else {
             setOLEVELCandidate(candidate.Candidate_Name)
