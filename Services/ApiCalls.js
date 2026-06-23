@@ -19,6 +19,23 @@ async function searchStudent(name) {
   }
 }
 
+async function searchStaff(name) {
+  try {
+    if (!base_url) {
+      throw new Error('VITE_BACKEND_URL is not defined')
+    }
+    const response = await fetch(`${base_url}/v1/api/Staff/search?q=${name}`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    return { success: true, data }
+  } catch (error) {
+    console.error('searchStaff error:', error.message)
+    return { success: false, error: error.message }
+  }
+}
+
 async function searchCandidate(name) {
   try {
     const response = await fetch(`${base_url}/v1/api/Candidates/search?name=${name}`)
@@ -33,19 +50,7 @@ async function searchCandidate(name) {
   }
 }
 
-async function searchStaff(name) {
-  try {
-    const response = await fetch(`${base_url}/v1/api/Staff/search?q=${name}`)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    const data = await response.json()
-    return { success: true, data }
-  } catch (error) {
-    console.log(error.message)
-    return { success: false, error: error.message }
-  }
-}
+
 
 async function fetchStudent(name, Class, Stream) {
   try {

@@ -17,7 +17,7 @@ function ProgressBar({posts,nextPost,progressBar,setProgressBar}){
             <div className="flex justify-between">
                 <div>
                     <div className="flex gap-2 items-start">
-                        <ClipboardCheck className="dark:text-white dark:text-slate-900"/>
+                        <ClipboardCheck className="dark:text-white text-slate-900"/>
                         <div>
                         <h2 className="text-left">
                             OFFICIAL BALLOT - {currentYear}<br/>

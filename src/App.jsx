@@ -19,6 +19,8 @@ import Policy from "../Pages/Policy"
 import Terms from "../Pages/Terms"
 import ContactUs from "../Pages/ContactUs"
 import ScrollToTop from "../Components/ScrollToTop"
+import NewCandidate from "../Pages/ADMIN/NewCandidate"
+
 function App() {
   const [name,setName] = useState('')
   const [stream,setStream] = useState('')
@@ -45,12 +47,14 @@ function App() {
                   <Route path="/student/voting-hall" element={<VotingHall/>}/>
               </Route>
               <Route path="/student/submit-vote" element={<SubmitVotes/>}/>
+
               <Route path="/admin/dashboard" element={<DashBoard/>}/>
               <Route path="/admin/students" element={<Students/>}/>
               <Route path="/admin/candidates" element={<Candidates/>}/>
               <Route path="/admin/elections" element={<ElectionProgress/>}/>
               <Route path="/admin/staff" element={<Staff/>}/>
               <Route path="/admin/analytics" element={<Analytics/>}/>
+              <Route path="/admin/candidates/new" element={<NewCandidate/>}/>
             </Routes>
         </userContext.Provider>
     </>

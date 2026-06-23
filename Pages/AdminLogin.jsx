@@ -125,7 +125,7 @@ function AdminLogin(){
                 <meta name="description" content="Secure admin login for the E-voter platform. Access your school's election management dashboard to oversee and manage the election process with ease." />
                 <meta name="keywords" content="E-voter, admin login, secure login, school elections, election management dashboard" />
             </Helmet>
-            <div className='space-y-5 border-1 border-gray-400 flex flex-col items-center dark:bg-[#1E293B]/30 bg-[F9FAFB]/30 backdrop-filter backdrop-blur-xl shadow-xl p-6 rounded-xl sm:w-125 w-[90%] relative'>
+            <div className='space-y-5 border border-gray-400 flex flex-col items-center dark:bg-[#1E293B]/30 bg-[F9FAFB]/30 backdrop-filter backdrop-blur-xl shadow-xl p-6 rounded-xl sm:w-125 w-[90%] relative'>
                 <h2 className='dark:text-white text-slate-900 text-3xl text-center'>Admin Login</h2>
                 <div className='bg-[#5478FF] p-5  flex items-center justify-center rounded-full'>
                     <div className='absolute top-5 right-3'>
